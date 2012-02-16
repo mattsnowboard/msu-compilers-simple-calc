@@ -1,0 +1,6 @@
+*.o
+*.tar.gz
+lex.yy*
+y.tab.*
+# the name of the executable
+simplecalc

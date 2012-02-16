@@ -1,33 +1,22 @@
-all:
-	make make2dot
-	 ./make2dot makefile1 |  dot -Tpng -o make1.png
-	 ./make2dot makefile2 |  dot -Tpng -o make2.png
-	 ./make2dot makefile3 |  dot -Tpng -o make3.png
-make2dot:	make2dot.o y.tab.o lex.yy.o
-	g++ make2dot.o y.tab.o lex.yy.o  -o make2dot 
+all: simplecalc
 
-lex.yy.c: make2dot.l y.tab.h
-	flex make2dot.l
+simplecalc:	expression.o y.tab.o lex.yy.o
+	g++ expression.o y.tab.o lex.yy.o -o simplecalc
+
+lex.yy.c: expression.l y.tab.h
+	flex expression.l
 
 lex.yy.o: lex.yy.c
 	gcc -c lex.yy.c
 
-y.tab.c y.tab.h:  make2dot.y
-	bison --yacc --defines make2dot.y
+y.tab.c y.tab.h: expression.y
+	bison --yacc --defines expression.y
 
 y.tab.o: y.tab.c y.tab.h
 	gcc -c y.tab.c
 
-make2dot.o: make2dot.cc y.tab.h
-	g++ -c make2dot.cc
-
-test: test.png
-
-test.png: test.dot
-	dot -Tpng test.dot -o test.png
-
-test.dot:  make2dot makefile
-	./make2dot makefile > test.dot
+expression.o: expression.cc y.tab.h
+	g++ -c expression.cc
 
 clean: 
-	rm make2dot *.o y.* lex.*
+	rm simplecalc *.o y.* lex.*

@@ -50,5 +50,7 @@ UNARY : '(' EXPR ')'  {}
 UNARY : NUM  {}
 //UNARY : SQRT NUM  {}
 UNARY : '-' NUM  {}
+UNARY : VAR  {}
+UNARY : '-' VAR  {}
 
 %%

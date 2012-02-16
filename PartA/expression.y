@@ -12,19 +12,29 @@
 
 %%
 
-S : E  {}
-S : S '\n'  {}
-S : S '\n' E  {}
+STMT : LINE  {}
+STMT : STMT '\n'  {}
+STMT : STMT '\n' LINE  {}
 
-E : E '+' T  {}
-E : E '-' T {}
-E : T  {}
-T : T '*' N  {}
-T : T '/' N  {}
-T : N  {}
+LINE : EXPR  {}
+LINE : COMP  {}
 
-N : '(' E ')'  {}
-N : NUM  {}
-N : '-' NUM  {}
+COMP : EXPR '<' EXPR  {}
+COMP : EXPR '>' EXPR  {}
+
+EXPR : EXPR '+' TERM  {}
+EXPR : EXPR '-' TERM {}
+EXPR : TERM  {}
+
+TERM : TERM '*' EXPON  {}
+TERM : TERM '/' EXPON  {}
+TERM : EXPON  {}
+
+EXPON : EXPON '^' SIGNED_NUM  {}
+EXPON : SIGNED_NUM  {}
+
+SIGNED_NUM : '(' EXPR ')'  {}
+SIGNED_NUM : NUM  {}
+SIGNED_NUM : '-' NUM  {}
 
 %%

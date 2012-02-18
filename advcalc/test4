@@ -1,0 +1,4 @@
+r := 5
+pi := 3.14159
+C := pi*r^2
+print "A Circle of Radius " r " has a circumference of " C

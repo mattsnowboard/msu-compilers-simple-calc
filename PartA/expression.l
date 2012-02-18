@@ -11,7 +11,9 @@
 
  // @todo Update this
 [0-9]+ { yylval = atoi(yytext); return NUM; }
+_[0-9a-zA-Z]+ {return VAR;}
 [ \t]+ {}
+(^|\(|\)|\*|<|>|-|\+) {return yytext;}
 \n     { return '\n'; }
 \r     {}
 .      { return yytext[0]; }

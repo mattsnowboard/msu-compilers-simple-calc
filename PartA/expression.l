@@ -13,7 +13,7 @@
 [0-9]+(\.[0-9]*)? { yylval = atoi(yytext); return NUM; }
 [a-zA-Z]+[a-zA-Z0-9]* {return VAR;}
 [ \t]+ {}
-(^|\(|\)|\*|<|>|-|\+) {return yytext;}
+(\^|\(|\)|\*|<|>|-|\+) {return yytext;}
 \n     { return '\n'; }
 \r     {}
 .      { return yytext[0]; }

@@ -9,24 +9,30 @@
 
 %}
 
-%s COMMENT STRING
+%s COMMENT
 
 %%
 
  // @todo Update this
 
-<INITIAL>[0-9]+(\.[0-9]*)? { yylval = atoi(yytext); return NUM; }
-<INITIAL>[a-zA-Z]+[a-zA-Z0-9]* {return VAR;}
+<INITIAL>[0-9]+(\.[0-9]*)? { yylval.ival = atoi(yytext); return NUM; }
+<INITIAL>[a-zA-Z]+[a-zA-Z0-9]* { yylval.sval = strdup(yytext); return VAR;}
 <INITIAL>[ \t]+ {}
 <INITIAL>(\^|\(|\)|\*|<|>|-|\+) {return yytext[0];}
-<INITIAL>\" {BEGIN(STRING); }
-<STRING>\" {BEGIN(INITIAL); }
-\n     {BEGIN(INTIAL); return '\n'; }
+
+ /* this was a regex I looked up for strings
+ it's nice because we can return a single "string" token
+ so the grammer doesn't need to piece together the characters */
+\"(\\.|[^\\\"])*\" { yylval.sval = strdup(yytext); return STRING; }
+
+<INITIAL>\n     { return '\n'; }
 
 \r     {}
-<INITIAL,STRING>.      { return yytext[0]; }
+
 <INITIAL>#	{BEGIN(COMMENT);}
+<INITIAL>.      { return yytext[0]; }
 <COMMENT>. {/*ignore*/}
+<COMMENT>\n {BEGIN(INITIAL);}
 %%
 
 int yywrap()

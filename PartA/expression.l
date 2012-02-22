@@ -7,6 +7,9 @@
 #include "y.tab.h"
 
 %}
+
+%s COMMENT STRING
+
 %%
 
  // @todo Update this

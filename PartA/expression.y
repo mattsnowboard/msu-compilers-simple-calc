@@ -2,25 +2,36 @@
 /*
  * Expression evaluator
  */
-
+#include "functions.h"
 #include "stdio.h"
-#define YYSTYPE int
+
+//#define YYSTYPE int
 
 %}
 
-%token NUM VAR ASSIGN SQRT PRINT STRING
+%union {
+	void *pval;		
+	int   ival;		
+	char *sval;		
+}
+
+%token PRINT 
+%token<ival> NUM
+%token<sval> STRING VAR ASSIGN SQRT
+
+%type<pval> STMT DECL EXPR STMTLINE EXPON UNARY TERM LINE  '<' '+' '-' '>' '*' '/' '^' '('')'
 
 %%
 
-STMT : STMT '\n'  {}
-STMT : STMT '\n' STMTLINE  {}
-STMT : STMTLINE  {}
+STMT : STMT '\n'	{}
+     | STMT '\n' STMTLINE  {createNodeStmts($1, $3);}
+     | STMTLINE  {}
 
 STMTLINE : DECL  {}
-STMTLINE : LINE  {}
-STMTLINE : OUTPUT {}
+	 | LINE  {}
+	 | OUTPUT {}
 
-DECL : VAR ASSIGN EXPR  {}
+DECL : VAR ASSIGN EXPR  {createAssignmentN($1,$3);}
 
 OUTPUT : PRINT PRINTABLE  {}
 
@@ -29,28 +40,28 @@ PRINTABLE : PRINTABLE STRING  {}
 PRINTABLE : LINE  {}
 PRINTABLE : STRING LINE  {}
 
-LINE : EXPR  {}
+LINE : EXPR  {setRoot($1);}
 LINE : COMP  {}
 
-COMP : EXPR '<' EXPR  {}
-COMP : EXPR '>' EXPR  {}
+COMP : EXPR '<' EXPR  {createLessThenN($1,$3); }
+COMP : EXPR '>' EXPR  {createGrtrThenN($1,$3);}
 
-EXPR : EXPR '+' TERM  {}
-EXPR : EXPR '-' TERM {}
+EXPR : EXPR '+' TERM  {createAddNode($1,$3);}
+EXPR : EXPR '-' TERM {createMinusNode($1,$3);}
 EXPR : TERM  {}
 
-TERM : TERM '*' EXPON  {}
-TERM : TERM '/' EXPON  {}
+TERM : TERM '*' EXPON  {createMultiplyNode($1,$3);}
+TERM : TERM '/' EXPON  {createDivideNode($1,$3);}
 TERM : EXPON  {}
 
-EXPON : EXPON '^' UNARY  {}
+EXPON : EXPON '^' UNARY  {createEXPNode($1,$3);}
 EXPON : UNARY  {}
 
-UNARY : '(' EXPR ')'  {}
-UNARY : NUM  {}
-//UNARY : SQRT NUM  {}
-UNARY : '-' NUM  {}
-UNARY : VAR  {}
-UNARY : '-' VAR  {}
+UNARY : '(' EXPR ')'  {createParenNode($2); }
+UNARY : NUM  {createNodeInt($1);}
+//UNARY : SQRT NUM  {createSqrtNode($2)}
+UNARY : '-' NUM  {createNodeStr($1); createNodeInt($2);}
+UNARY : VAR  {createNodeStr($1);}
+UNARY : '-' VAR  {createNodeStr($1); createNodeStr($2);}
 
 %%

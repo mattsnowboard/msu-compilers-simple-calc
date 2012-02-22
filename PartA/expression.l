@@ -13,14 +13,16 @@
 %%
 
  // @todo Update this
-[0-9]+(\.[0-9]*)? { yylval = atoi(yytext); return NUM; }
-[a-zA-Z]+[a-zA-Z0-9]* {return VAR;}
-[ \t]+ {}
-(\^|\(|\)|\*|<|>|-|\+) {return yytext[0];}
-\n     { return '\n'; }
+<INITIAL>[0-9]+(\.[0-9]*)? { yylval = atoi(yytext); return NUM; }
+<INITIAL>[a-zA-Z]+[a-zA-Z0-9]* {return VAR;}
+<INITIAL>[ \t]+ {}
+<INITIAL>(\^|\(|\)|\*|<|>|-|\+) {return yytext[0];}
+<INITIAL>\" {BEGIN(STRING); }
+\n     {BEGIN(INTIAL); return '\n'; }
 \r     {}
-.      { return yytext[0]; }
-#.*	{/*IGNORE COMMENT*/}
+<INITIAL>.      { return yytext[0]; }
+<INITIAL>#	{BEGIN(COMMENT);}
+<COMMENT>. {/*ignore*/}
 %%
 
 int yywrap()

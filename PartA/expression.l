@@ -20,10 +20,11 @@
 <INITIAL>[ \t]+ {}
 <INITIAL>(\^|\(|\)|\*|<|>|-|\+) {return yytext[0];}
 <INITIAL>\" {BEGIN(STRING); }
+<STRING>\" {BEGIN(INITIAL); }
 \n     {BEGIN(INTIAL); return '\n'; }
 
 \r     {}
-<INITIAL>.      { return yytext[0]; }
+<INITIAL,STRING>.      { return yytext[0]; }
 <INITIAL>#	{BEGIN(COMMENT);}
 <COMMENT>. {/*ignore*/}
 %%

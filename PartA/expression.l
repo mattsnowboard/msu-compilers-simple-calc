@@ -15,11 +15,13 @@
 
  // @todo Update this
 
+<INITIAL>(print) {return PRINT;}
 <INITIAL>[0-9]+(\.[0-9]*)? { yylval.ival = atoi(yytext); return NUM; }
 <INITIAL>[a-zA-Z]+[a-zA-Z0-9]* { yylval.sval = strdup(yytext); return VAR;}
 <INITIAL>[ \t]+ {}
 <INITIAL>(\^|\(|\)|\*|<|>|-|\+) {return yytext[0];}
-<INITIAL>":=" {return ASSIGN;}
+<INITIAL>(:=) {return ASSIGN;}
+
  /* this was a regex I looked up for strings
  it's nice because we can return a single "string" token
  so the grammer doesn't need to piece together the characters */

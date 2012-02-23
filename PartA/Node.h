@@ -1,81 +1,28 @@
 #ifndef _NODE_H
 #define _NODE_H
 
-
+#include <stdio.h>
 #include <iostream>
 #include <string.h>
-
+#include <list>
+#include <vector>
+#include <map>
 
 using namespace std;
 
-class Val
-{
-public:	enum Type {NONE, INT, STR};
-	Val() {type = NONE;}
-	Val(int i) {type = INT;  ival = i;}
-	Val(std::string &s) {type = STR;  sval = new std::string(s);}
-	~Val() {if(type == STR) {delete sval;}}
-	
-	Val(const Val &v)
-	{
-		if(v.GetType() == INT)
-		{
-			type = INT;
-			ival = v.IVal();
-		}
-		else if(v.GetType() == STR)
-		{
-			type = STR;
-			sval = new std::string(v.SVal());
-		}
-	}
-
-	Val &operator=(const Val &v)
-	{
-		//if(type == STR) {delete sval;}
-		string s = v.SVal();
-		if(s.compare(">")){}
-
-
-		if(v.GetType() == INT)
-		{
-			type = INT;
-			ival = v.IVal();
-		}
-
-		else if(v.GetType() == STR)
-		{
-			type = STR;
-			sval = new std::string(v.SVal());
-		}
-	}
-
-
-	Type GetType() const {return type;}
-	int IVal() const {return ival;}
-	const std::string &SVal() const {return *sval;}
-
-private:
-	Type  type;
-	union
-	{
-		std::string  *sval;
-		int           ival;
-	};	
-};
 
 class CNode
 {
 public:
-//	string& GetSymbol(){ return *sval;}
+
 	CNode(void) {}
 	virtual ~CNode(void) {}
 	virtual void Evaluate() {}
 	enum Type {NONE, INT, STR};
-	//Val() {type = NONE;}
-	//int Val(int i) {type = INT;  ival = i;}
-	//string &STRING() {return *sval;}
-
+	CNode* Parent, *Child;
+	vector <int> CalcVector;
+	map<string,int> CalcMap;
+	map<string,int> Variables;
 
 
 	CNode(CNode &v)
@@ -95,7 +42,10 @@ public:
 	Type GetType() const {return type;}
 	int IVal() const {return ival;}
 	const std::string &SVal() const {return *sval;}
+
+
 private:
+
 	Type  type;
 	union
 
@@ -213,15 +163,18 @@ public:
 	{
 		
 		if((nleft->GetType() & nright->GetType()) == INT)
-		{if {nright->IVal() == 0) {}
-		else{	int x = nleft->IVal();
+		{
+		 if (nright->IVal() == 0) 
+			{cout << "Can't divided by 0!" << endl; return 0;}
+		else
+		{
+			int x = nleft->IVal();
 			int y = nright->IVal();
 			int z = x+y;
-			return z;}
+			return z;
+			}
 		}
 		else{}
-
-
 
 	}
 
@@ -241,12 +194,25 @@ public:
 	~GrtrThenNode(){delete nleft; delete nright;}
 
 	void CreateTree(){}
+	virtual bool Calculate()
+	{
+		bool LGrtrThenR = false;
+
+		if((nleft->GetType() & nright->GetType()) == INT)
+		{
+			int x = nleft->IVal();
+			int y = nright->IVal();
+			if (x > y)
+			{ LGrtrThenR =true;}
+			return LGrtrThenR;				 
+		}
+		else{}
+	}
 
 
 private:
 	CNode* nleft;
 	CNode* nright;
-
 	int count;
 };
 
@@ -254,13 +220,31 @@ class LessThenNode : public CNode
 {
 public:
 	LessThenNode(CNode *left, CNode *right)  { nleft = left; nright = right;}
-
 	~LessThenNode(){delete nleft; delete nright;}
 
 	void CreateTree(){}
 
+	virtual bool Calculate()
+	{
+		bool LLessThenR = false;
+
+		if((nleft->GetType() & nright->GetType()) == INT)
+		{
+			int x = nleft->IVal();
+			int y = nright->IVal();
+			if (x < y)
+			{ LLessThenR = true;}
+			return LLessThenR;				 
+		}
+		else{}
+
+
+
+	}
+
 
 private:
+
 	CNode* nleft;
 	CNode* nright;
 
@@ -271,18 +255,23 @@ class VariableNode : public CNode
 {
 public:
 	VariableNode(const char *var, int val)  { Var = var; Val = val;}
-
+	
 	~VariableNode(){}
 
 	void CreateTree(){}
+
+	virtual int Calculate()
+	{		
+		Variables.insert(pair<const char*,int>(Var,Val) );
+	}
 
 
 private:
 	const char *Var;
 	int Val;
 
-	CNode* nleft;
-	CNode* nright;
+	map<const char*,int> Variables;
+
 
 	int count;
 };
@@ -296,7 +285,23 @@ public:
 
 	void CreateTree(){}
 
-
+	virtual int Calculate()
+	{		
+		if((nleft->GetType() == STR) & (nright->GetType() == INT))
+		{
+			string temp = nleft->SVal();
+			const char* x = temp.c_str();
+			int y = nright->IVal();
+			Variables.insert(pair<const char*,int>(x,y) );
+		}
+		else if((nleft->GetType() == INT) & (nright->GetType() == STR))
+		{
+			string temp = nright->SVal();
+			const char* y = temp.c_str();
+			int x = nleft->IVal();
+			Variables.insert(pair<const char*,int>(y,x) );
+		}
+	}
 private:
 
 	VariableNode* nleft;
@@ -312,13 +317,32 @@ public:
 	~ExponentNode(){}
 
 	void CreateTree(){}
+	virtual int Calculate()
+	{
+		
+		if((nleft->GetType() & nright->GetType()) == INT)
+		{
+			int x = nleft->IVal();
+			int y = nright->IVal();
+		      	if( y == 0) { return 1;}
+
+			else{
+				for (int i = 0; i<y; i++)
+				{
+					NodeResult = x*x;
+				}
+				CalcVector.push_back(NodeResult);
+				return NodeResult;
+			}
+		}
+	}
 
 
 private:
 
 	CNode* nleft;
 	CNode* nright;
-	int count;
+	int NodeResult;
 };
 
 class SqrRootNode : public CNode
@@ -329,13 +353,25 @@ public:
 	~SqrRootNode(){}
 
 	void CreateTree(){}
+	virtual int Calculate()
+	{
+		
+		if(nleft->GetType() == INT)
+		{
+			int x = nleft->IVal();
+			NodeResult = x ^(-1/2);	
+			CalcVector.push_back(NodeResult);
+			return NodeResult;		
+			
+		}
+	}
 
 
 private:
 
 	CNode* nleft;
 	CNode* nright;
-	int count;
+	int NodeResult;
 };
 
 class ParenthesesNode : public CNode
@@ -360,8 +396,9 @@ class CNodeInt : public CNode
 public:
 	CNodeInt(int i) {val = i;}
 	int &Value() {return val;}
-//	virtual Val Evaluate() {}
-
+	void CreateTree(){
+		CalcVector.push_back(val);
+	}
 private:
 	int val;
 };
@@ -371,7 +408,9 @@ class CNodeStr : public CNode
 public:
 	CNodeStr(const char *s) {val = s;}
 
-//	virtual Val Evaluate() {return Val(val);}
+	void CreateTree(){
+		//CalcVector.push_back(val);
+	}
 
 private:
 	std::string val;
@@ -390,146 +429,5 @@ private:
 	CNode *nleft;
 	CNode *nright;
 };
-
-/*
-class AddOperation : public CNode
-{
-public:
-	CNodetree(CNode *a, CNodeStr *b, CNode *c) {pa = a; Action = b; pc = c;}
-
-	virtual Val Evaluate()
-	{       Val v = Action->Evaluate();
-		Val(s);
-//		if(v ='<')
-		{
-			Print(pa);
-			Print(pc);
-		}
-
-		std::cout << std::endl;
-
-		return Val();
-	}
-
-
-private:
-	void Print(CNode *n)
-	{
-		Val v = n->Evaluate();
-		if(v.GetType() == Val::INT)
-			std::cout << v.IVal() << " ";
-		else if(v.GetType() == Val::STR)
-			std::cout << v.SVal() << " ";
-	}
-
-	CNode *pa;
-	CNode *pc;
-	CNodeStr *Action;
-};
-*/
-/*
-class CNodetree : public CNode
-
-{
-
-public:
-	CNodetree(CNode *a, CNode *b) {pa = a;  pb = b;}
-
-	virtual Val Evaluate()
-
-	{
-		for(int i=0;  i<1;  i++)
-		{
-			Print(pa);
-			Print(pb);
-
-		}
-
-		std::cout << std::endl;
-
-
-		return Val();
-	}
-
-
-private:
-
-	void Print(CNode *n)
-	{
-		Val v = n->Evaluate();
-		if(v.GetType() == Val::INT)
-			std::cout << v.IVal() << " ";
-
-		else if(v.GetType() == Val::STR)
-			std::cout << v.SVal() << " ";
-	}
-
-
-	CNode *pa;
-	CNode *pb;
-};
-
-class CPlusTree : public CNode
-{
-public:
-	string stmtplus['+'];
-	CPlusTree(CNode *a, CNode *b) {pa = a; pb = b;}
-	virtual ~CPlusTree() {delete pa; delete pb; delete pc;}
-
-	virtual Val Evaluate()
-	{
-		pa->Evaluate();
-		pb->Evaluate();
-		//pc->Evaluate();
-
-		return Val();
-	}
-
-private:
-
-	CNode *pa;
-	CNode *pb;
-	string *pc;
-};
-
-class CCompareTree : public CNode
-{
-public:
-	CCompareTree(CNode *a, string comp1, CNode *c) {pa = a; comp = comp1; pc = c;}
-	virtual ~CCompareTree() {delete pa; comp = ""; delete pc;}
-	
-	virtual Val Evaluate()
-	{
-		if(comp.compare("<")){}
-
-	}
-
-
-private:
-	CNode *pa;
-	string comp;
-	CNode *pc;
-};
-
-
-class CNodeStmts : public CNode
-{
-public:
-	CNodeStmts(CNode *a, CNode *b) {pa = a;  pb = b;}
-	virtual ~CNodeStmts() {delete pa;  delete pb;}
-
-	virtual Val Evaluate()
-	{
-		pa->Evaluate();
-		pb->Evaluate();
-
-		return Val();
-	}
-
-private:
-
-	CNode *pa;
-	CNode *pb;
-};*/
 
 #endif

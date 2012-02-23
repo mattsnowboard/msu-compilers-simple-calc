@@ -7,3 +7,4 @@ simplecalc
 # make depend stuff
 .D_TARGET
 .deps
+PartA/.deps

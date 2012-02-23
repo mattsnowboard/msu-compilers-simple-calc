@@ -2,7 +2,7 @@
 SRCS := Numerical.cpp function.cpp
 OBJS := $(SRCS:%.cpp=%.o)
 
-CXXFLAGS = -Wall -std=c++0x
+CXXFLAGS = -Wall #-std=c++0x
 
 DEPDIR = .deps
 df = $(DEPDIR)/$(@F)

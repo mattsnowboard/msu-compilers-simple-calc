@@ -4,7 +4,7 @@
 
 #include <map>
 #include <string>
-
+#include "Expr.h"
 
 using namespace std;
 
@@ -14,12 +14,12 @@ class SymbolTable
 public:
 
 	bool DoesExist( string );
-	int& GetVal( string );
-	void AddVar( string, int );
+	Expr* GetVal( string );
+	void AddVar( string, Expr* );
 
 
 private:
-	map<string,int> VarMap;
+	std::map<string,Expr*> VarMap;	
 };
 
 #endif

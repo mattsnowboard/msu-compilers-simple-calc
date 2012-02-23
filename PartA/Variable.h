@@ -21,9 +21,9 @@ public:
             _child->Evaluate();
             _value = _child->Get();
 
-	if(!symTable.DoesExist(_name))
+	if(!symTable->DoesExist(_name))
 	{
-	  symTable.AddVar( _name, _value );
+	  symTable->AddVar( _name,_child );
 	}
 
 	else{}

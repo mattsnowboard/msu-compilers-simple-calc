@@ -3,7 +3,7 @@
 
 #include "Expr.h"
 
-class Numerical : Expr
+class Numerical : public Expr
 {
 public:
     Numerical(double v = 0) : _value(v) {}

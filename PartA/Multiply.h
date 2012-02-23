@@ -12,6 +12,8 @@ public:
     virtual void Evaluate()
     {
         if (_left && _right) {
+            _left->Evaluate();
+            _right->Evaluate();
             _value = _left->Get() * _right->Get();
         }
     }

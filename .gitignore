@@ -4,3 +4,6 @@ lex.yy*
 y.tab.*
 # the name of the executable
 simplecalc
+# make depend stuff
+.D_TARGET
+.deps

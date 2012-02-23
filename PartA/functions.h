@@ -1,12 +1,21 @@
 #ifndef _FUNCTIONS_H
 #define _FUNCTIONS_H
 
-//I didn't edit this yet but I will
-void *createNodeInt(int n);
-void *createNodeStr(const char *s);
-void *createNodetree(void *a, void *b);
-void *createNodeStmts(void *a, void *b);
-//void *createComparetree(void *a, void *b, void *c);
-void setRoot(void *a);
+void * CreateNegate(void *expr);
+void * CreateSqrt(void *expr);
+void * CreateAdd(void *left, void *right);
+void * CreateSubtract(void *left, void *right);
+void * CreateDivide(void *left, void *right);
+void * CreateMultiply(void *left, void *right);
+void * CreateExponent(void *left, void *right);
+void * CreateLessThan(void *left, void *right);
+void * CreateGreaterThan(void *left, void *right);
+void * CreateDouble(double d);
+void * CreateVariable(const char *name);
+void * CreateString(const char *s);
+// Used to push back an expression tree for cleanup later
+void PushToStack(void *expr);
+// Print an expression tree
+void PrintExpr(void *expr);
 
 #endif

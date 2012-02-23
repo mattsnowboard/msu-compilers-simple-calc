@@ -19,19 +19,19 @@
 %token<ival> NUM
 %token<sval> STRING VAR ASSIGN SQRT
 
-%type<pval> STMT DECL EXPR STMTLINE EXPON UNARY TERM LINE  '<' '+' '-' '>' '*' '/' '^' '('')'
+%type<pval> STMT DECL EXPR STMTLINE EXPON UNARY TERM LINE COMP NUMBER
 
 %%
 
 STMT : STMT '\n'	{}
-     | STMT '\n' STMTLINE  {createNodeStmts($1, $3);}
+     | STMT '\n' STMTLINE  {}
      | STMTLINE  {}
 
 STMTLINE : DECL  {}
-	 | LINE  {}
+     | LINE  {PrintExpr($1);}
 	 | OUTPUT {}
 
-DECL : VAR ASSIGN EXPR  {createAssignmentN($1,$3);}
+DECL : VAR ASSIGN EXPR  {}
 
 OUTPUT : PRINT PRINTABLE  {}
 
@@ -40,28 +40,29 @@ PRINTABLE : PRINTABLE STRING  {}
 PRINTABLE : LINE  {}
 PRINTABLE : STRING LINE  {}
 
-LINE : EXPR  {setRoot($1);}
-LINE : COMP  {}
+LINE : EXPR  {$$ = $1; PushToStack($1);}
+LINE : COMP  {$$ = $1; PushToStack($1);}
 
-COMP : EXPR '<' EXPR  {createLessThenN($1,$3); }
-COMP : EXPR '>' EXPR  {createGrtrThenN($1,$3);}
+COMP : EXPR '<' EXPR  {$$ = CreateLessThan($1, $3); }
+COMP : EXPR '>' EXPR  {$$ = CreateGreaterThan($1, $3);}
 
-EXPR : EXPR '+' TERM  {createAddNode($1,$3);}
-EXPR : EXPR '-' TERM {createMinusNode($1,$3);}
-EXPR : TERM  {}
+EXPR : EXPR '+' TERM  {$$ = CreateAdd($1, $3);}
+EXPR : EXPR '-' TERM {$$ = CreateSubtract($1, $3);}
+EXPR : TERM  {$$ = $1;}
 
-TERM : TERM '*' EXPON  {createMultiplyNode($1,$3);}
-TERM : TERM '/' EXPON  {createDivideNode($1,$3);}
-TERM : EXPON  {}
+TERM : TERM '*' EXPON  {$$ = CreateMultiply($1, $3);}
+TERM : TERM '/' EXPON  {$$ = CreateDivide($1, $3);}
+TERM : EXPON  {$$ = $1;}
 
-EXPON : EXPON '^' UNARY  {createEXPNode($1,$3);}
-EXPON : UNARY  {}
+EXPON : EXPON '^' UNARY  {$$ = CreateExponent($1, $3);}
+EXPON : UNARY  {$$ = $1;}
 
-UNARY : '(' EXPR ')'  {createParenNode($2); }
-UNARY : NUM  {createNodeInt($1);}
-//UNARY : SQRT NUM  {createSqrtNode($2)}
-UNARY : '-' NUM  {createNodeStr($1); createNodeInt($2);}
-UNARY : VAR  {createNodeStr($1);}
-UNARY : '-' VAR  {createNodeStr($1); createNodeStr($2);}
+UNARY : '-' NUMBER {$$ = CreateNegate($2);}
+UNARY : SQRT NUMBER {$$ = CreateSqrt($2);}
+UNARY : NUMBER {$$ = $1;}
+
+NUMBER : '(' EXPR ')'  {$$ = $2;}
+NUMBER : NUM  {$$ = CreateDouble($1);}
+NUMBER : VAR  {$$ = CreateVariable($1);}
 
 %%

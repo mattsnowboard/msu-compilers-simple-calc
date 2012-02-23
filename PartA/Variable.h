@@ -2,8 +2,11 @@
 #define _VARIABLE_H
 
 #include "Unary.h"
-
+#include "SymbolTable.h"
 #include <string>
+
+
+
 
 class Variable : public Unary
 {
@@ -17,6 +20,14 @@ public:
         if (_child) {
             _child->Evaluate();
             _value = _child->Get();
+
+	if(!symTable.DoesExist(_name))
+	{
+	  symTable.AddVar( _name, _value );
+	}
+
+	else{}
+
         }
     }
 

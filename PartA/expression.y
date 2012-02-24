@@ -28,8 +28,8 @@ STMT : STMT '\n'	{}
      | STMTLINE  {}
 
 STMTLINE : DECL  {}
-| LINE  {PrintExpr($1); PushToStack($1);}
-	     | OUTPUT {PrintPrintList($1);}
+		| LINE  {PrintExpr($1); PushToStack($1);}
+		| OUTPUT {PrintPrintList($1);}
 
 DECL : VAR ASSIGN EXPR  {
     AssignVariable($1, $3);

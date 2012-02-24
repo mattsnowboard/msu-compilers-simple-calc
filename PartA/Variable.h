@@ -23,6 +23,11 @@ public:
             if (s.DoesExist(_name)) {
                 _child = s.GetVal(_name);
             }
+            else{
+                std::cout << "Variable: " << _name << " not defined." << std::endl;
+                _value = 0;
+                _isEvaluated = true;
+            }
         }
         if (_child) {
             _child->Evaluate();

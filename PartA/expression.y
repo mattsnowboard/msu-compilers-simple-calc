@@ -31,7 +31,10 @@ STMTLINE : DECL  {}
      | LINE  {PrintExpr($1);}
 	 | OUTPUT {}
 
-DECL : VAR ASSIGN EXPR  {}
+DECL : VAR ASSIGN EXPR  {
+    AssignVariable($1, $3);
+    // NOTE: we don't clean up EXPR, it is owned by SymbolTable
+}
 
 OUTPUT : PRINT PRINTABLE  {}
 

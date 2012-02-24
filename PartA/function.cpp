@@ -13,6 +13,7 @@
 #include "Value.h"
 #include "Variable.h"
 #include "String.h"
+#include "SymbolTable.h"
 
 extern "C" {
 #include "functions.h"    
@@ -82,7 +83,7 @@ extern "C" void * CreateDouble(double d)
 
 extern "C" void * CreateVariable(const char *name)
 {
-    Variable *node = new Variable(name, NULL);
+    Variable *node = new Variable(name);
     return node;
 }
 
@@ -101,5 +102,11 @@ extern "C" void PrintExpr(void *expr)
 {
     Expr *e = (Expr *)expr;
     e->Evaluate();
-    std::cout << *e << std::endl;
+    std::cout << "Answer: " << *e << std::endl;
+}
+
+extern "C" void AssignVariable(const char *name, void *expr)
+{
+    SymbolTable &s = SymbolTable::GetInstance();
+    s.AddVar(name, (Numerical *) expr);
 }

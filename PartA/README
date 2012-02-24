@@ -7,3 +7,8 @@ Authors:
  - Jason Harris (harri757)
  - Camden Smith (csmith)
 
+Memory Management Notes
+-----------------------
+ 1. stack of Expr roots will get cleaned at end
+ 2. SymbolTable will delete all Expr roots
+ 3. Every node deletes children EXCEPT Variable (see 2)

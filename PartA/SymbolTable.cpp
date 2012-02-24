@@ -1,5 +1,4 @@
 
-#include "functions.h"
 #include "SymbolTable.h"
 //
 #include "Expr.h"
@@ -7,23 +6,28 @@
 #include <string>
 #include "Numerical.h"
 
-using namespace std;
-
-
-
-void SymbolTable::AddVar(string Var, Expr* exprssn )
-{VarMap.insert(pair< string, Expr*>(Var, exprssn));}
-
-Expr* SymbolTable::GetVal( string Var )
+void SymbolTable::AddVar(std::string Var, Numerical* exprssn )
 {
-    return VarMap[Var];
+    _VarMap[Var] = exprssn;
 }
 
-bool SymbolTable::DoesExist( string Var )
+Numerical* SymbolTable::GetVal( std::string Var )
+{
+    return _VarMap[Var];
+}
+
+bool SymbolTable::DoesExist( std::string Var )
 {   
-    return (VarMap.find(Var) != VarMap.end());
+    return (_VarMap.find(Var) != _VarMap.end());
 }
 
-extern "C" void AddVarFromBison(string BVar, int BVal ) 
-{} //symTable.AddVar(pair< string, int>(BVar, BVal));
-
+SymbolTable::~SymbolTable()
+{
+    for (std::map<std::string, Numerical*>::iterator it = _VarMap.begin();
+         it != _VarMap.end();
+         ++it) {
+        if (it->second != NULL) {
+            delete it->second;
+        }
+    }
+}

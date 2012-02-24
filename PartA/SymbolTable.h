@@ -4,22 +4,32 @@
 
 #include <map>
 #include <string>
-#include "Expr.h"
-
-using namespace std;
-
+#include "Numerical.h"
 
 class SymbolTable 
 {
 public:
 
-	bool DoesExist( string );
-	Expr* GetVal( string );
-	void AddVar( string, Expr* );
+	bool DoesExist( std::string );
+	Numerical * GetVal( std::string );
+	void AddVar( std::string, Numerical* );
 
+    // Singleton pattern
+    static SymbolTable& GetInstance()
+    {
+        static SymbolTable instance; // Guaranteed to be destroyed.
+        // Instantiated on first use.
+        return instance;
+    }
+
+    ~SymbolTable();
 
 private:
-	std::map<string,Expr*> VarMap;	
+    SymbolTable() {}
+    SymbolTable(const SymbolTable &);
+    SymbolTable& operator=(const SymbolTable &);
+
+	std::map<std::string,Numerical*> _VarMap;	
 };
 
 #endif

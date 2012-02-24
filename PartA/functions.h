@@ -17,5 +17,7 @@ void * CreateString(const char *s);
 void PushToStack(void *expr);
 // Print an expression tree
 void PrintExpr(void *expr);
+// Assign variable an expression in symbol table
+void AssignVariable(const char *name, void *expr);
 
 #endif

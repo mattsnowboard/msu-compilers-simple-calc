@@ -2,11 +2,12 @@
 #define _EXPR_H
 
 #include <iostream>
+#include <stdexcept>
 
 class Expr
 {
 public:
-    Expr() {}
+    Expr() : _isEvaluated(false) {}
     virtual ~Expr() {}
 
     virtual void Evaluate() = 0;
@@ -16,9 +17,15 @@ public:
      */
     friend std::ostream& operator<<(std::ostream &out, const Expr& e)
     {
+        if (!e._isEvaluated) {
+            throw std::logic_error("Must evaluate before printing!");
+        }
         e.Print(out);
         return out;
     }
+
+protected:
+    bool _isEvaluated;
 
 private:
 

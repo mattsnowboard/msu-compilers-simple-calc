@@ -8,10 +8,13 @@ class String : public Expr
 {
 public:
 
-    String(std::string s) : _value(s) {}
+    String(std::string s) : _value(s.substr(1,s.length()-2)) {}
 
     // NOP
-    virtual void Evaluate() {}
+    virtual void Evaluate()
+    {
+        _isEvaluated = true;
+    }
 
 private:
     std::string _value;

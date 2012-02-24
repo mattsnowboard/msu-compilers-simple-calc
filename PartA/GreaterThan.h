@@ -15,6 +15,7 @@ public:
             _left->Evaluate();
             _right->Evaluate();
             _value = (_left->Get() > _right->Get()) ? 1 : 0;
+            _isEvaluated = true;
         }
     }
 };

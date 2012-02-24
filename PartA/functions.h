@@ -15,9 +15,15 @@ void * CreateVariable(const char *name);
 void * CreateString(const char *s);
 // Used to push back an expression tree for cleanup later
 void PushToStack(void *expr);
+// Used to push back a printlist for cleanup later
+void PushToPrintStack(void *pl);
 // Print an expression tree
 void PrintExpr(void *expr);
 // Assign variable an expression in symbol table
 void AssignVariable(const char *name, void *expr);
+// Add to a print list
+void * AddPrintable(void *plist, void *expr);
+void * CreatePrintList();
+void PrintPrintList(void *plist);
 
 #endif

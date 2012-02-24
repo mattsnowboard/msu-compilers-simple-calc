@@ -16,6 +16,7 @@ public:
             _left->Evaluate();
             _right->Evaluate();
             _value = std::pow(_left->Get(), _right->Get());
+            _isEvaluated = true;
         }
     }
 };

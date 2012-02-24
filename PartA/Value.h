@@ -9,7 +9,10 @@ public:
     Value(double v) : Numerical(v) {}
     
     // NOP
-    virtual void Evaluate() {}
+    virtual void Evaluate()
+    {
+        _isEvaluated = true;
+    }
 };
 
 #endif

@@ -27,6 +27,7 @@ public:
         if (_child) {
             _child->Evaluate();
             _value = _child->Get();
+            _isEvaluated = true;
         }
     }
 

@@ -11,7 +11,7 @@
 
 %union {
 	void *pval;		
-	int   ival;		
+	double ival;		
 	char *sval;		
 }
 
@@ -19,7 +19,7 @@
 %token<ival> NUM
 %token<sval> STRING VAR ASSIGN SQRT
 
-%type<pval> STMT DECL EXPR STMTLINE EXPON UNARY TERM LINE COMP NUMBER
+%type<pval> STMT DECL EXPR STMTLINE EXPON UNARY TERM LINE COMP NUMBER OUTPUT PRINTABLE
 
 %%
 
@@ -29,15 +29,15 @@ STMT : STMT '\n'	{}
 
 STMTLINE : DECL  {}
      | LINE  {PrintExpr($1);}
-	 | OUTPUT {}
+	 | OUTPUT {PrintExpr($1);}
 
 DECL : VAR ASSIGN EXPR  {}
 
-OUTPUT : PRINT PRINTABLE  {}
+OUTPUT : PRINT PRINTABLE  {$$ = $2; PushToStack($2);}
 
-PRINTABLE : STRING  {}
-PRINTABLE : PRINTABLE STRING  {}
-PRINTABLE : LINE  {}
+PRINTABLE : STRING  {$$ = CreateString($1);}
+PRINTABLE : PRINTABLE STRING  {$$ = CreateString($2);}
+PRINTABLE : LINE  {$$ = $1;}
 PRINTABLE : STRING LINE  {}
 
 LINE : EXPR  {$$ = $1; PushToStack($1);}

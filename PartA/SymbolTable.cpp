@@ -8,7 +8,15 @@
 
 void SymbolTable::AddVar(std::string Var, Numerical* exprssn )
 {
-    _VarMap[Var] = exprssn;
+    std::pair<std::map<std::string, Numerical*>::iterator, bool> ret
+        = _VarMap.insert(std::make_pair(Var, exprssn));
+    if (ret.second == false) {
+        // we are overwriting, that is fine as long as we clean it up
+        Numerical *cleanMe = _VarMap[Var];
+        _VarMap[Var] = exprssn;
+        delete cleanMe;
+    }
+
 }
 
 Numerical* SymbolTable::GetVal( std::string Var )
@@ -17,7 +25,7 @@ Numerical* SymbolTable::GetVal( std::string Var )
 }
 
 bool SymbolTable::DoesExist( std::string Var )
-{   
+{
     return (_VarMap.find(Var) != _VarMap.end());
 }
 

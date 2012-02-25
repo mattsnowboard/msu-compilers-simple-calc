@@ -15,6 +15,17 @@ public:
     Variable(std::string s) : _name(s), _child(NULL) {}
 
     std::string GetName() const { return _name; }
+    
+    Variable(Variable& Source):Numerical(Source._value),_name(Source._name)
+    {
+        if(Source._child == NULL)
+            delete Source._child;
+        else
+            _child = Source._child;
+            
+        
+    }
+    Variable& operator=(Variable& RHS){return *this;}
 
     virtual void Evaluate()
     {

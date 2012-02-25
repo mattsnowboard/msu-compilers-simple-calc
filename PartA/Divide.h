@@ -9,6 +9,9 @@ public:
     Divide(Numerical *left, Numerical *right) :
         Binary(left, right) {}
 
+    Divide(Divide& Source):Binary(Source._left, Source._right){}
+    Divide& operator=(Divide& RHS){return *this;}
+    
     virtual void Evaluate()
     {
         if (_left && _right) {

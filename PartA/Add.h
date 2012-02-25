@@ -8,6 +8,9 @@ class Add : public Binary
 public:
     Add(Numerical *left, Numerical *right) :
         Binary(left, right) {}
+    
+    Add(Add& Source):Binary(Source._left, Source._right){}
+    Add& operator=(Add& RHS){return *this;}
 
     virtual void Evaluate()
     {

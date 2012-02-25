@@ -8,6 +8,8 @@ class Negate : public Unary
 public:
     Negate(Numerical *child) : Unary(child) {}
 
+    Negate(Negate& Source):Unary(Source._child){}
+
     virtual void Evaluate()
     {
         if (_child) {

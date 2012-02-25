@@ -12,6 +12,9 @@ public:
 
     virtual void Evaluate() = 0;
 
+    Expr(Expr& Source):_isEvaluated(Source._isEvaluated){}
+    Expr& operator=(Expr& RHS){return *this;}
+
     /**
      * Print an arbitrary expression to a stream
      */

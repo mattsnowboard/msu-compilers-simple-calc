@@ -8,6 +8,9 @@ class Subtract : public Binary
 public:
     Subtract(Numerical *left, Numerical *right) :
         Binary(left, right) {}
+        
+    Subtract(Subtract& Source):Binary(Source._left, Source._right){}
+    Subtract& operator=(Subtract& RHS){return *this;}
 
     virtual void Evaluate()
     {

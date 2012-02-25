@@ -10,6 +10,9 @@ public:
     Exponent(Numerical *left, Numerical *right) :
         Binary(left, right) {}
 
+    Exponent(Exponent& Source):Binary(Source._left, Source._right){}
+    Exponent& operator=(Exponent& RHS){return *this;}
+    
     virtual void Evaluate()
     {
         if (_left && _right) {

@@ -9,6 +9,9 @@ class String : public Expr
 public:
 
     String(std::string s) : _value(s.substr(1,s.length()-2)) {}
+    
+    String(String& Source):Expr(),_value(Source._value){}
+    String& operator=(String & RHS){return *this;}
 
     // NOP
     virtual void Evaluate()

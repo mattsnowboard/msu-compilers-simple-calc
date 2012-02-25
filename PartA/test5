@@ -1,0 +1,11 @@
+a:=sqrt (9*9/9 + 9 )/2
+#This does sqrt of whats in parentheses and then divides by 2 which should be correct
+
+a:=sqrt ((9*9/9 + 9 +9 - 9)/2)
+#this is good
+
+b:= 4
+print a
+print a<b
+print b<a
+

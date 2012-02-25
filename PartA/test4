@@ -3,4 +3,4 @@ a:=2
 
 print a
 
-#This works fine
+#This works fine and prints 2

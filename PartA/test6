@@ -1,0 +1,10 @@
+a:=(9*9/9 + 9 )/2
+b:=sqrt a
+print b
+#this is good
+
+
+a:=(9*9/9 + 9 )/2
+a:=sqrt a 		
+print a
+#This results in a memory issue and seg faults

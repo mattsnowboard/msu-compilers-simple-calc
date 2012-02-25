@@ -7,6 +7,16 @@ class Unary : public Numerical
 {
 public:
     Unary(Numerical *child) : _child(child) {}
+    
+    Unary(Unary& Source):Numerical(Source._value)
+    {
+        if(Source._child == NULL)
+            delete Source._child;
+        else
+            _child = Source._child;
+    }
+    Unary& operator=(Unary& RHS){return *this;}
+    
     virtual ~Unary()
     {
         if (_child != NULL) {

@@ -9,6 +9,9 @@ public:
     GreaterThan(Numerical *left, Numerical *right) :
         Binary(left, right) {}
 
+    GreaterThan(GreaterThan& Source):Binary(Source._left, Source._right){}
+    GreaterThan& operator=(GreaterThan& RHS){return *this;}
+    
     virtual void Evaluate()
     {
         if (_left && _right) {

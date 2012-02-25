@@ -9,6 +9,9 @@ public:
     LessThan(Numerical *left, Numerical *right) :
         Binary(left, right) {}
 
+    LessThan(LessThan& Source):Binary(Source._left, Source._right){}
+    LessThan& operator=(LessThan& RHS){return *this;}
+
     virtual void Evaluate()
     {
         if (_left && _right) {

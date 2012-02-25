@@ -9,6 +9,9 @@ class Sqrt : public Unary
 public:
     Sqrt(Numerical *child) : Unary(child) {}
 
+    Sqrt(Sqrt& Source):Unary(Source._child){}
+    Sqrt& operator=(Sqrt& RHS){return *this;}
+
     virtual void Evaluate()
     {
         if (_child) {

@@ -1,0 +1,15 @@
+#Blank line here I get a syntax error
+a:= 7
+b:= 14
+
+c:= a + b
+print c
+#this works
+
+a:= 7
+b:= 14
+
+a:= a + b
+#this gives me a segmentation fault
+
+print a

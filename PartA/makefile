@@ -1,8 +1,8 @@
 
-SRCS := Numerical.cpp function.cpp
+SRCS := Numerical.cpp function.cpp SymbolTable.cpp
 OBJS := $(SRCS:%.cpp=%.o)
 
-CXXFLAGS = -Wall #-std=c++0x
+CXXFLAGS = -Wall -g
 
 DEPDIR = .deps
 df = $(DEPDIR)/$(@F)

@@ -14,6 +14,7 @@ public:
         if (_child) {
             _child->Evaluate();
             _value = std::sqrt(_child->Get());
+            _isEvaluated = true;
         }
     }
 };

@@ -1,5 +1,4 @@
 
-#include "functions.h"
 #include "SymbolTable.h"
 //
 #include "Expr.h"
@@ -7,23 +6,36 @@
 #include <string>
 #include "Numerical.h"
 
-using namespace std;
-
-
-
-void SymbolTable::AddVar(string Var, Expr* exprssn )
-{VarMap.insert(pair< string, Expr*>(Var, exprssn));}
-
-Expr* SymbolTable::GetVal( string Var )
+void SymbolTable::AddVar(std::string Var, Numerical* exprssn )
 {
-    return VarMap[Var];
+    std::pair<std::map<std::string, Numerical*>::iterator, bool> ret
+        = _VarMap.insert(std::make_pair(Var, exprssn));
+    if (ret.second == false) {
+        // we are overwriting, that is fine as long as we clean it up
+        Numerical *cleanMe = _VarMap[Var];
+        _VarMap[Var] = exprssn;
+        delete cleanMe;
+    }
+
 }
 
-bool SymbolTable::DoesExist( string Var )
-{   
-    return (VarMap.find(Var) != VarMap.end());
+Numerical* SymbolTable::GetVal( std::string Var )
+{
+    return _VarMap[Var];
 }
 
-extern "C" void AddVarFromBison(string BVar, int BVal ) 
-{} //symTable.AddVar(pair< string, int>(BVar, BVal));
+bool SymbolTable::DoesExist( std::string Var )
+{
+    return (_VarMap.find(Var) != _VarMap.end());
+}
 
+SymbolTable::~SymbolTable()
+{
+    for (std::map<std::string, Numerical*>::iterator it = _VarMap.begin();
+         it != _VarMap.end();
+         ++it) {
+        if (it->second != NULL) {
+            delete it->second;
+        }
+    }
+}

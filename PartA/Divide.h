@@ -16,6 +16,7 @@ public:
             _right->Evaluate();
             // Don't care about divide by zero??
             _value = _left->Get() / _right->Get();
+            _isEvaluated = true;
         }
     }
 };

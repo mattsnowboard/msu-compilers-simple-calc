@@ -13,12 +13,15 @@
 #include "Value.h"
 #include "Variable.h"
 #include "String.h"
+#include "SymbolTable.h"
+#include "PrintList.h"
 
 extern "C" {
 #include "functions.h"    
 }
 
 std::stack<Expr*> ToCleanUp;
+std::stack<PrintList*> ToCleanUpPrint;
 
 extern "C" void * CreateNegate(void *expr)
 {
@@ -82,7 +85,7 @@ extern "C" void * CreateDouble(double d)
 
 extern "C" void * CreateVariable(const char *name)
 {
-    Variable *node = new Variable(name, NULL);
+    Variable *node = new Variable(name);
     return node;
 }
 
@@ -97,9 +100,39 @@ extern "C" void PushToStack(void *expr)
     ToCleanUp.push((Expr*) expr);
 }
 
+extern "C" void PushToPrintStack(void *pl)
+{
+    ToCleanUpPrint.push((PrintList *) pl);
+}
+
 extern "C" void PrintExpr(void *expr)
 {
     Expr *e = (Expr *)expr;
     e->Evaluate();
-    std::cout << *e << std::endl;
+    std::cout << "Answer: " << *e << std::endl;
+}
+
+extern "C" void AssignVariable(const char *name, void *expr)
+{
+    SymbolTable &s = SymbolTable::GetInstance();
+    s.AddVar(name, (Numerical *) expr);
+}
+
+extern "C" void * AddPrintable(void *plist, void *expr)
+{
+    PrintList *p = (PrintList *)plist;
+    p->AddItem((Expr *)expr);
+    return p;
+}
+
+extern "C" void * CreatePrintList()
+{
+    PrintList *p = new PrintList;
+    return p;
+}
+
+extern "C" void PrintPrintList(void *plist)
+{
+    PrintList *p = (PrintList *)plist;
+    std::cout << *p << std::endl;
 }

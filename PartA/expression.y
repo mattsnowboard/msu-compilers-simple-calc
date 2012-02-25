@@ -26,7 +26,8 @@
 STMT : STMT '\n'	{}
      | STMT '\n' STMTLINE  {}
      | STMTLINE  {}
-
+	 | '\n' STMT {}
+	 
 STMTLINE : DECL  {}
 		| LINE  {PrintExpr($1); PushToStack($1);}
 		| OUTPUT {PrintPrintList($1);}

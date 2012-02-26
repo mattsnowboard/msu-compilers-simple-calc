@@ -9,8 +9,13 @@ public:
     LessThan(Numerical *left, Numerical *right) :
         Binary(left, right) {}
 
-    LessThan(LessThan& Source):Binary(Source._left, Source._right){}
-    LessThan& operator=(LessThan& RHS){return *this;}
+    virtual LessThan* Clone()
+    {
+        Numerical *l = (_left) ? _left->Clone() : NULL;
+        Numerical *r = (_right) ? _right->Clone() : NULL;
+        LessThan *b = new LessThan(l, r);
+        return b;
+    }
 
     virtual void Evaluate()
     {

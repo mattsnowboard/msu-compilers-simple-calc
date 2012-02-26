@@ -9,8 +9,13 @@ public:
     Subtract(Numerical *left, Numerical *right) :
         Binary(left, right) {}
         
-    Subtract(Subtract& Source):Binary(Source._left, Source._right){}
-    Subtract& operator=(Subtract& RHS){return *this;}
+    virtual Subtract* Clone()
+    {
+        Numerical *l = (_left) ? _left->Clone() : NULL;
+        Numerical *r = (_right) ? _right->Clone() : NULL;
+        Subtract *b = new Subtract(l, r);
+        return b;
+    }
 
     virtual void Evaluate()
     {

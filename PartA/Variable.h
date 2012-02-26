@@ -8,33 +8,34 @@
 /**
  * Note Variable is not a Unary
  * Variable does not own its child like Unary does, SymbolTable owns it
+ * @Matt 2/26/12
+ * Now Variable does own the child
  */
-class Variable : public Numerical
+class Variable : public Unary
 {
 public:
-    Variable(std::string s) : _name(s), _child(NULL) {}
+    Variable(std::string s) : Unary(NULL), _name(s) {}
 
     std::string GetName() const { return _name; }
     
-    Variable(Variable& Source):Numerical(Source._value),_name(Source._name)
+
+    virtual Variable* Clone()
     {
-        if(Source._child == NULL)
-            delete Source._child;
-        else
-            _child = Source._child;
-            
-        
+        Variable *v = new Variable(_name);
+        v->_child = (_child) ? _child->Clone() : NULL;
+        return v;
     }
-    Variable& operator=(Variable& RHS){return *this;}
 
     virtual void Evaluate()
     {
         if (!_child) {
             SymbolTable &s = SymbolTable::GetInstance();
             if (s.DoesExist(_name)) {
-                _child = s.GetVal(_name);
+                Numerical *temp = s.GetVal(_name);
+                // Now Variable owns this
+                _child = temp->Clone();
             }
-            else{
+            else {
                 std::cout << "Variable: " << _name << " not defined." << std::endl;
                 _value = 0;
                 _isEvaluated = true;
@@ -43,18 +44,12 @@ public:
         if (_child) {
             _child->Evaluate();
             _value = _child->Get();
-	}
-
-	else{}
-
-            _isEvaluated = true;
-        
-
+        }
+        _isEvaluated = true;
     }
 
 protected:
     std::string _name;
-    Numerical *_child;
 };
 
 #endif

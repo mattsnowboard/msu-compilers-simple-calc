@@ -9,9 +9,14 @@ public:
     GreaterThan(Numerical *left, Numerical *right) :
         Binary(left, right) {}
 
-    GreaterThan(GreaterThan& Source):Binary(Source._left, Source._right){}
-    GreaterThan& operator=(GreaterThan& RHS){return *this;}
-    
+    virtual GreaterThan* Clone()
+    {
+        Numerical *l = (_left) ? _left->Clone() : NULL;
+        Numerical *r = (_right) ? _right->Clone() : NULL;
+        GreaterThan *b = new GreaterThan(l, r);
+        return b;
+    }
+
     virtual void Evaluate()
     {
         if (_left && _right) {

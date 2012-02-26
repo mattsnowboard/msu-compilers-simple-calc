@@ -8,10 +8,9 @@ class Numerical : public Expr
 public:
 
     Numerical(double v = 0) : _value(v) {}
-    
-    Numerical(Numerical& Source):_value(Source.Get()){}
-    Numerical& operator=(Numerical& RHS){return *this;}
-    
+
+    virtual Numerical* Clone() = 0;
+
     virtual double Get() const { return _value; }
 
 protected:

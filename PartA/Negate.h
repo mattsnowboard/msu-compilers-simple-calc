@@ -8,7 +8,12 @@ class Negate : public Unary
 public:
     Negate(Numerical *child) : Unary(child) {}
 
-    Negate(Negate& Source):Unary(Source._child){}
+    virtual Negate* Clone()
+    {
+        Numerical *c = (_child) ? _child->Clone() : NULL;
+        Negate *u = new Negate(c);
+        return u;
+    }
 
     virtual void Evaluate()
     {
@@ -18,9 +23,6 @@ public:
             _isEvaluated = true;
         }
     }
-    
-protected:
-    
 };
 
 #endif

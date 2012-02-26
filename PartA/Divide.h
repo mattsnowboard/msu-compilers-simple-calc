@@ -9,9 +9,14 @@ public:
     Divide(Numerical *left, Numerical *right) :
         Binary(left, right) {}
 
-    Divide(Divide& Source):Binary(Source._left, Source._right){}
-    Divide& operator=(Divide& RHS){return *this;}
-    
+    virtual Divide* Clone()
+    {
+        Numerical *l = (_left) ? _left->Clone() : NULL;
+        Numerical *r = (_right) ? _right->Clone() : NULL;
+        Divide *b = new Divide(l, r);
+        return b;
+    }
+
     virtual void Evaluate()
     {
         if (_left && _right) {

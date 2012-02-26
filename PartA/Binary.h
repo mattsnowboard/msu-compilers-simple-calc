@@ -7,21 +7,16 @@ class Binary : public Numerical
 {
 public:
     Binary(Numerical *left, Numerical *right) :
-        _left(left), _right(right) {}
-        
-    Binary(Binary& Source):Numerical(Source._value)
+        _left(left), _right(right)
     {
-        if(Source._left == NULL)
-            delete Source._left;
-        else
-            _left = Source._left;
-        if(Source._right == NULL)
-            delete Source._right;
-        else
-            _right = Source._right;
+        if (_left) {
+            _left->Evaluate();
+        }
+        if (_right) {
+            _right->Evaluate();
+        }
     }
-    Binary& operator=(Binary& RHS){return *this;}
-    
+
     virtual ~Binary()
     {
         if (_left != NULL) {

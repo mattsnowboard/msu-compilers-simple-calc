@@ -12,8 +12,7 @@ public:
 
     virtual void Evaluate() = 0;
 
-    Expr(Expr& Source):_isEvaluated(Source._isEvaluated){}
-    Expr& operator=(Expr& RHS){return *this;}
+    virtual Expr* Clone() = 0;
 
     /**
      * Print an arbitrary expression to a stream

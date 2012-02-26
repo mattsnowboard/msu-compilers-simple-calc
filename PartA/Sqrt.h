@@ -9,8 +9,12 @@ class Sqrt : public Unary
 public:
     Sqrt(Numerical *child) : Unary(child) {}
 
-    Sqrt(Sqrt& Source):Unary(Source._child){}
-    Sqrt& operator=(Sqrt& RHS){return *this;}
+    virtual Sqrt* Clone()
+    {
+        Numerical *c = (_child) ? _child->Clone() : NULL;
+        Sqrt *u = new Sqrt(c);
+        return u;
+    }
 
     virtual void Evaluate()
     {

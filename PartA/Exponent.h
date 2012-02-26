@@ -10,9 +10,14 @@ public:
     Exponent(Numerical *left, Numerical *right) :
         Binary(left, right) {}
 
-    Exponent(Exponent& Source):Binary(Source._left, Source._right){}
-    Exponent& operator=(Exponent& RHS){return *this;}
-    
+    virtual Exponent* Clone()
+    {
+        Numerical *l = (_left) ? _left->Clone() : NULL;
+        Numerical *r = (_right) ? _right->Clone() : NULL;
+        Exponent *b = new Exponent(l, r);
+        return b;
+    }
+
     virtual void Evaluate()
     {
         if (_left && _right) {

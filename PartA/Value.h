@@ -7,9 +7,11 @@ class Value : public Numerical
 {
 public:
     Value(double v) : Numerical(v) {}
-    
-    Value(Value& Source):Numerical(Source._value){}
-    Value& operator=(Value& RHS){return *this;}
+
+    virtual Value* Clone()
+    {
+        return new Value(_value);
+    }
     
     // NOP
     virtual void Evaluate()

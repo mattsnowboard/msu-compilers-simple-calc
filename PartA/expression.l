@@ -16,6 +16,7 @@
  // @todo Update this
 <INITIAL>(sqrt) {return SQRT;}
 <INITIAL>(print) {return PRINT;}
+<INITIAL>(help|exit|clear) {yylval.sval = strdup(yytext); return USERSUPPORT;}
 <INITIAL>[0-9]+(\.[0-9]*)? { yylval.ival = atof(yytext); return NUM; }
 <INITIAL>[a-zA-Z]+[a-zA-Z0-9]* { yylval.sval = strdup(yytext); return VAR;}
 <INITIAL>[ \t]+ {}

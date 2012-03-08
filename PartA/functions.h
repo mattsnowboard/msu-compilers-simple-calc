@@ -25,5 +25,6 @@ void AssignVariable(const char *name, void *expr);
 void * AddPrintable(void *plist, void *expr);
 void * CreatePrintList();
 void PrintPrintList(void *plist);
+void PrintUserSupport(const char *command);
 
 #endif

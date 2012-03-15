@@ -21,6 +21,8 @@ public:
         // Instantiated on first use.
         return instance;
     }
+	
+	void Clear();
 
     ~SymbolTable();
 

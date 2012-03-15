@@ -7,17 +7,9 @@ class Value : public Numerical
 {
 public:
     Value(double v) : Numerical(v) {}
-
-    virtual Value* Clone()
-    {
-        return new Value(_value);
-    }
     
     // NOP
-    virtual void Evaluate()
-    {
-        _isEvaluated = true;
-    }
+    virtual void Evaluate() {}
 };
 
 #endif

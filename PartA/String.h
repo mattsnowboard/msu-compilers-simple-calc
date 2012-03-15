@@ -10,6 +10,13 @@ public:
 
     String(std::string s) : _value(s.substr(1,s.length()-2)) {}
 
+    virtual String* Clone()
+    {
+        std::string temp(_value);
+        temp = "\"" + temp + "\"";
+        return new String(temp);
+    }
+    
     // NOP
     virtual void Evaluate()
     {

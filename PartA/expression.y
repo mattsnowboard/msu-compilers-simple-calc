@@ -15,11 +15,11 @@
 	char *sval;		
 }
 
-%token PRINT 
+%token PRINT IF WHILE
 %token<ival> NUM
-%token<sval> STRING VAR ASSIGN SQRT
+%token<sval> STRING VAR ASSIGN SQRT USERSUPPORT
 
-%type<pval> STMT DECL EXPR STMTLINE EXPON UNARY TERM LINE COMP NUMBER OUTPUT PRINTSTRING PRINTLINE
+%type<pval> STMT DECL EXPR STMTLINE EXPON UNARY TERM LINE COMP NUMBER OUTPUT PRINTSTRING PRINTLINE IFSTMT WHILESTMT
 
 %%
 
@@ -31,6 +31,12 @@ STMT : STMT '\n'	{}
 STMTLINE : DECL  {}
 		| LINE  {PrintExpr($1); PushToStack($1);}
 		| OUTPUT {PrintPrintList($1);}
+//		| USERSUPPORT {/*PrintUserSupport($1);*/}
+		| IFSTMT {}
+		| WHILESTMT {}
+		
+IFSTMT	: IF '(' EXPR ')' '{' STMT '}' {/*$$ = CreateIf($3, $6);*/}
+WHILESTMT	: WHILE '(' EXPR ')' '{' STMT '}' {/*$$ = CreateWhile($3, $6);*/}
 
 DECL : VAR ASSIGN EXPR  {
     AssignVariable($1, $3);

@@ -2,32 +2,23 @@
 #define _EXPR_H
 
 #include <iostream>
-#include <stdexcept>
 
 class Expr
 {
 public:
-    Expr() : _isEvaluated(false) {}
+    Expr() {}
     virtual ~Expr() {}
 
     virtual void Evaluate() = 0;
-
-    virtual Expr* Clone() = 0;
 
     /**
      * Print an arbitrary expression to a stream
      */
     friend std::ostream& operator<<(std::ostream &out, const Expr& e)
     {
-        if (!e._isEvaluated) {
-            throw std::logic_error("Must evaluate before printing!");
-        }
         e.Print(out);
         return out;
     }
-
-protected:
-    bool _isEvaluated;
 
 private:
 

@@ -6,13 +6,7 @@
 class Unary : public Numerical
 {
 public:
-    Unary(Numerical *child) : _child(child)
-    {
-        if (_child) {
-            _child->Evaluate();
-        }
-    }
-    
+    Unary(Numerical *child) : _child(child) {}
     virtual ~Unary()
     {
         if (_child != NULL) {

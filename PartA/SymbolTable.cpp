@@ -29,6 +29,11 @@ bool SymbolTable::DoesExist( std::string Var )
     return (_VarMap.find(Var) != _VarMap.end());
 }
 
+void SymbolTable::Clear()
+{
+    _VarMap.clear();
+}
+
 SymbolTable::~SymbolTable()
 {
     for (std::map<std::string, Numerical*>::iterator it = _VarMap.begin();

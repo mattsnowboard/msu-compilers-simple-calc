@@ -7,16 +7,7 @@ class Binary : public Numerical
 {
 public:
     Binary(Numerical *left, Numerical *right) :
-        _left(left), _right(right)
-    {
-        if (_left) {
-            _left->Evaluate();
-        }
-        if (_right) {
-            _right->Evaluate();
-        }
-    }
-
+        _left(left), _right(right) {}
     virtual ~Binary()
     {
         if (_left != NULL) {

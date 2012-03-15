@@ -31,7 +31,11 @@ STMT : STMT '\n'	{}
 STMTLINE : DECL  {}
 		| LINE  {PrintExpr($1); PushToStack($1);}
 		| OUTPUT {PrintPrintList($1);}
+<<<<<<< HEAD
 //		| USERSUPPORT {/*PrintUserSupport($1);*/}
+=======
+		| USERSUPPORT {PrintUserSupport($1);}
+>>>>>>> cc0a01eb3091e32a092c6896d3f7761e760cc9fd
 		| IFSTMT {}
 		| WHILESTMT {}
 		

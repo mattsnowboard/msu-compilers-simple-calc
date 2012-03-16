@@ -2,6 +2,7 @@
 *.tar.gz
 lex.yy*
 y.tab.*
+y.output
 # the name of the executable
 simplecalc
 # make depend stuff

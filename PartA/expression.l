@@ -13,32 +13,28 @@
 
 %%
 
- // @todo Update this
-<INITIAL>(sqrt) {return SQRT;}
-<INITIAL>(if) {return IF;}
-<INITIAL>(while) {return WHILE;}
-<INITIAL>(print) {return PRINT;}
-<INITIAL>(help|exit|clear) {yylval.sval = strdup(yytext); return USERSUPPORT;}
-<INITIAL>[0-9]+(\.[0-9]*)? { yylval.ival = atof(yytext); return NUM; }
-<INITIAL>[a-zA-Z]+[a-zA-Z0-9]* { yylval.sval = strdup(yytext); return VAR;}
-<INITIAL>[ \t]+ {}
-<INITIAL>(\^|\(|\)|\*|<|>|-|\+\}\{) {return yytext[0];}
+(sqrt) {return SQRT;}
+(if) {return IF;}
+(while) {return WHILE;}
+(print) {return PRINT;}
+(help|exit|clear) {yylval.sval = strdup(yytext); return USERSUPPORT;}
+[0-9]+(\.[0-9]*)? { yylval.ival = atof(yytext); return NUM; }
+[a-zA-Z]+[a-zA-Z0-9]* { yylval.sval = strdup(yytext); return VAR;}
+(\^|\(|\)|\*|<|>|-|\+\}\{) {return yytext[0];}
+(:=) {return ASSIGN;}
 
-<INITIAL>(:=) {return ASSIGN;}
+^[ \t]*\n {/* ignore blank lines */}
+[ \t]+ {}
 
  /* this was a regex I looked up for strings
  it's nice because we can return a single "string" token
  so the grammer doesn't need to piece together the characters */
 \"(\\.|[^\\\"])*\" { yylval.sval = strdup(yytext); return STRING; }
 
-<INITIAL>\n     { return '\n'; }
-
+\n     { return '\n'; }
 \r     {}
 
-<INITIAL>#	{BEGIN(COMMENT);}
-<INITIAL>.      { return yytext[0]; }
-<COMMENT>. {/*ignore*/}
-<COMMENT>\n {BEGIN(INITIAL);}
+#.*\n	{/*ignore comments*/}
 %%
 
 int yywrap()

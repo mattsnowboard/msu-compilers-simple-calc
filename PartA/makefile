@@ -21,7 +21,7 @@ lex.yy.o: lex.yy.c
 	gcc -c lex.yy.c
 
 y.tab.c y.tab.h: expression.y
-	bison --yacc --defines expression.y
+	bison --yacc --defines expression.y --report=state
 
 y.tab.o: y.tab.c y.tab.h
 	gcc -c y.tab.c

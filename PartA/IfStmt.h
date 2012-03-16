@@ -6,22 +6,29 @@
 class IfStmt : public Conditional
 {
 public:
-    IfStmt(Statements *left, Statements *right) :
-        Conditional(left, right) {}
 
-    virtual void Evaluate()
+    IfStmt(Numerical *cond, StatementList *stmts) :
+        Conditional(cond, stmts)
+    {}
+
+    virtual void Execute()
     {
-       	if (_left && _right)
-	{
-            _left->Evaluate();
-            _right->Evaluate();		
-	//I think we need to call the greater than and less than tree here, I'm not quite sure what I need to do for that.
-       	    if (_left < _right)
-            	result = 1;
-       	    else
-            	result = 0;
-            _isEvaluated = true;
+        if (_cond)
+        {
+            _cond->Evaluate();
+       	    if (_cond->Get() != 0) {
+                // true, execute statement list
+                _stmts->Execute();
+            }
         }
+    }
+
+    virtual IfStmt* Clone()
+    {
+        Numerical *c = (_cond) ? _cond->Clone() : NULL;
+        StatementList *s = (_stmts) ? _stmts->Clone() : NULL;
+        IfStmt *ifstmt = new IfStmt(c, s);
+        return ifstmt;
     }
 };
 

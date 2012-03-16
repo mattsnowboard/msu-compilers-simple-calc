@@ -2,23 +2,20 @@
 #define _CONDITIONAL_H
 
 #include "Statement.h"
+#include "StatementList.h"
+#include <list>
 
-
-
-class Conditional : public Statements
+class Conditional : public Statement
 {
 public:
-    Conditional(Statements *left, Statements *right) :
-        Statements(left, right) {}
+    Conditional(Numerical *cond, StatementList *stmts) :
+        _cond(cond), _stmts(stmts)
+    {}
     virtual ~Conditional() {}
 
-    virtual void Evaluate();
-
-
 protected:
-    bool _isEvaluated;
-
-
+    Numerical *_cond;
+    StatementList *_stmts;
 };
 
 #endif

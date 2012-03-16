@@ -6,6 +6,7 @@
 #include <stack>
 
 #include "Expr.h"
+#include "ExitException.h"
 
 using namespace std;
 
@@ -45,7 +46,12 @@ int main(int argc, char **argv)
 
     do
     {
-        yyparse();
+        try {
+            yyparse();
+        } catch (ExitException &e) {
+            // exit command
+            return 0;
+        }
     } while (!feof(yyin));
 
     while (!ToCleanUp.empty()) {

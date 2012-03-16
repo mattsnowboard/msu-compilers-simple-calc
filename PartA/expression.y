@@ -31,11 +31,7 @@ STMT : STMT '\n'	{}
 STMTLINE : DECL  {}
 		| LINE  {PrintExpr($1); PushToStack($1);}
 		| OUTPUT {PrintPrintList($1);}
-<<<<<<< HEAD
-//		| USERSUPPORT {/*PrintUserSupport($1);*/}
-=======
 		| USERSUPPORT {PrintUserSupport($1);}
->>>>>>> cc0a01eb3091e32a092c6896d3f7761e760cc9fd
 		| IFSTMT {}
 		| WHILESTMT {}
 		
@@ -50,10 +46,10 @@ DECL : VAR ASSIGN EXPR  {
 OUTPUT : PRINT PRINTSTRING  {$$ = $2; PushToPrintStack($2);}
 OUTPUT : PRINT PRINTLINE {$$ = $2; PushToPrintStack($2);}
 OUTPUT : PRINT {
-				void * holder = AddPrintable(CreatePrintList(), CreateString(" "));
-				$$ = holder;
-				PushToPrintStack(holder);
-				}
+    void * holder = AddPrintable(CreatePrintList(), CreateString(" "));
+    $$ = holder;
+    PushToPrintStack(holder);
+}
 
 PRINTSTRING : PRINTLINE STRING {$$ = AddPrintable($1, CreateString($2));}
 PRINTLINE : PRINTSTRING LINE {$$ = AddPrintable($1, $2);}

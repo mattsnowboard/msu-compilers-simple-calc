@@ -45,11 +45,12 @@ public:
             _child->Evaluate();
             _value = _child->Get();
         }
-        _isEvaluated = true;
     }
 
 protected:
     std::string _name;
+    // this may prove useful...or we can delete it safely
+    bool _isEvaluated;
 };
 
 #endif

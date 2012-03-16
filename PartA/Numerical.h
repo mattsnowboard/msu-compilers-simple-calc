@@ -2,6 +2,7 @@
 #define _NUMERICAL_H
 
 #include "Expr.h"
+#include <iostream>
 
 class Numerical : public Expr
 {

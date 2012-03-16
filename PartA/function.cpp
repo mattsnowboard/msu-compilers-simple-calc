@@ -1,5 +1,6 @@
 
 #include <stack>
+#include <cstring>
 
 
 #include "Add.h"
@@ -19,12 +20,9 @@
 #include "String.h"
 #include "SymbolTable.h"
 #include "PrintList.h"
+#include "ExitException.h"
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> cc0a01eb3091e32a092c6896d3f7761e760cc9fd
 extern "C" {
 #include "functions.h"    
 }
@@ -146,25 +144,21 @@ extern "C" void PrintPrintList(void *plist)
     std::cout << *p << std::endl;
 }
 
-<<<<<<< HEAD
-extern "C" void * CreateIf(void *left, void *right) 
+extern "C" void * CreateIf(void *cond, void *stmts) 
 {
-//	IfStmt *p =new IfStmt((Statements *)left, (Statements *)right);
-//	return p;
+	IfStmt *p = new IfStmt((Numerical *)cond, (StatementList *)stmts);
+	return p;
 } 
 
-
-/*
-extern "C" void PrintUserSupport(const char *command)
-{
-    if(!stricmp(command, "exit"))
-=======
 extern "C" void PrintUserSupport(const char *command)
 {
     if(!strcmp(command, "exit"))
->>>>>>> cc0a01eb3091e32a092c6896d3f7761e760cc9fd
     {
-        exit(1);
+        // this gave me an error (exit not declared)
+        // I'm tryign an exception approach but revert if you have a better
+        // idea
+        //exit(1);
+        throw ExitException();
     }
     if(!strcmp(command, "help"))
     {
@@ -176,11 +170,7 @@ extern "C" void PrintUserSupport(const char *command)
          std::cout << "help       :     Print this help message." << std::endl << std::endl;
          std::cout << "*************Programming Grammar*********" << std::endl;
          std::cout << "Comments   :     Lines beginning with # are ignored by the interpreter and are comments.\n\
-<<<<<<< HEAD
                  Any text betwen  and  are ignored by the interpreter and are also comments." << std::endl;
-=======
-                 Any text betwen /* and */ are ignored by the interpreter and are also comments." << std::endl;
->>>>>>> cc0a01eb3091e32a092c6896d3f7761e760cc9fd
          
          std::cout << "Variables  :     A variable is declared by using the \":=\" operator.\n\
                  EXAMPLE:\n\
@@ -191,8 +181,5 @@ extern "C" void PrintUserSupport(const char *command)
         SymbolTable &theTable = SymbolTable::GetInstance();
         theTable.Clear();
     }
-<<<<<<< HEAD
-}*/
-=======
 }
->>>>>>> cc0a01eb3091e32a092c6896d3f7761e760cc9fd
+

@@ -1,5 +1,5 @@
-#ifndef _STRING_H
-#define _STRING_H
+#ifndef _MY_STRING_H
+#define _MY_STRING_H
 
 #include "Expr.h"
 #include <string>
@@ -20,7 +20,6 @@ public:
     // NOP
     virtual void Evaluate()
     {
-        _isEvaluated = true;
     }
 
 private:

@@ -16,7 +16,6 @@ public:
     // NOP
     virtual void Evaluate()
     {
-        _isEvaluated = true;
     }
 };
 

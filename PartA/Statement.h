@@ -4,21 +4,16 @@
 #include <iostream>
 #include <stdexcept>
 
-class Statements :public Binary
+class Statement
 {
 public:
-    Statements(Binary *left, Binary *right) :
-        Binary(left, right) {}
+    Statement() {}
 
-    virtual ~Statements() {}
+    virtual ~Statement() {}
 
-    virtual void Evaluate() = 0;
+    virtual void Execute() = 0;
 
-
-protected:
-    bool _isEvaluated;
-
-    double result;
+    virtual Statement* Clone() = 0;
 
 };
 

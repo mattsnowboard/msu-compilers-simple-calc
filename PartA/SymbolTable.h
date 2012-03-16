@@ -27,6 +27,8 @@ public:
     ~SymbolTable();
 
 private:
+    void Cleanup();
+
     SymbolTable() {}
     SymbolTable(const SymbolTable &);
     SymbolTable& operator=(const SymbolTable &);

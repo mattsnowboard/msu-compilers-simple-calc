@@ -46,9 +46,8 @@ DECL : VAR ASSIGN EXPR  {
 OUTPUT : PRINT PRINTSTRING  {$$ = $2; PushToPrintStack($2);}
 OUTPUT : PRINT PRINTLINE {$$ = $2; PushToPrintStack($2);}
 OUTPUT : PRINT {
-    void * holder = AddPrintable(CreatePrintList(), CreateString(" "));
-    $$ = holder;
-    PushToPrintStack(holder);
+    $$ = AddPrintable(CreatePrintList(), CreateString(" "));
+    PushToPrintStack($$);
 }
 
 PRINTSTRING : PRINTLINE STRING {$$ = AddPrintable($1, CreateString($2));}

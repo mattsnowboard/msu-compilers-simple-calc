@@ -31,10 +31,15 @@ bool SymbolTable::DoesExist( std::string Var )
 
 void SymbolTable::Clear()
 {
-    _VarMap.clear();
+    Cleanup();
 }
 
 SymbolTable::~SymbolTable()
+{
+    Cleanup();
+}
+
+void SymbolTable::Cleanup()
 {
     for (std::map<std::string, Numerical*>::iterator it = _VarMap.begin();
          it != _VarMap.end();
@@ -43,4 +48,5 @@ SymbolTable::~SymbolTable()
             delete it->second;
         }
     }
+    _VarMap.clear();
 }

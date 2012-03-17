@@ -105,6 +105,7 @@ extern "C" void * CreateString(const char *s)
 extern "C" void * CreateStatementList(void *stmt)
 {
     StatementList* s = new StatementList;
+    s->AddItem((Statement*)stmt);
     return s;
 }
 

@@ -23,6 +23,11 @@
 
 %%
 
+PROGRAM : PROGRAM '\n' {}
+        | PROGRAM '\n' STMT {/* Execute */}
+        | STMT {/* Execute here*/}
+        | {}
+
 STMTS : STMTS '\n'	{}
       | STMTS '\n' STMT  {}
       | STMT  {}

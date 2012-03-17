@@ -14,7 +14,7 @@
 class Variable : public Unary
 {
 public:
-    Variable(std::string s) : Unary(NULL), _name(s) {}
+    Variable(const std::string &s) : Unary(NULL), _name(s) {}
 
     std::string GetName() const { return _name; }
     

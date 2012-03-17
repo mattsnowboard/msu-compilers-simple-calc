@@ -10,7 +10,7 @@ public:
         Conditional(cond, stmts)
     {}
 
-    virtual void Evaluate()
+    virtual void Execute()
     {
         if (_cond)
         {
@@ -24,7 +24,7 @@ public:
         }
     }
 
-    virtual WhileStatement* Clone()
+    virtual WhileStmt* Clone()
     {
         Numerical *c = (_cond) ? _cond->Clone() : NULL;
         StatementList *s = (_stmts) ? _stmts->Clone() : NULL;

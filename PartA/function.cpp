@@ -15,8 +15,9 @@
 #include "Value.h"
 #include "Variable.h"
 #include "Statement.h"
-#include "Conditional.h"
+#include "StatementList.h"
 #include "IfStmt.h"
+#include "WhileStmt.h"
 #include "String.h"
 #include "SymbolTable.h"
 #include "PrintList.h"
@@ -27,8 +28,7 @@ extern "C" {
 #include "functions.h"    
 }
 
-std::stack<Expr*> ToCleanUp;
-std::stack<PrintList*> ToCleanUpPrint;
+std::stack<Statement*> ToCleanUp;
 
 extern "C" void * CreateNegate(void *expr)
 {
@@ -102,17 +102,49 @@ extern "C" void * CreateString(const char *s)
     return node;
 }
 
+extern "C" void * CreateStatementList(void *stmt)
+{
+    StatementList* s = new StatementList;
+    return s;
+}
+
+extern "C" void * AddStatementToList(void *stmtlist, void *stmt)
+{
+    StatementList* s = (StatementList*)stmtlist;
+    s->AddItem((Statement*)stmt);
+    return s;
+}
+
+extern "C" void * CreateIfStmt(void *cond, void *stmtlist)
+{
+    IfStmt* ifst = new IfStmt((Numerical*)cond, (StatementList*) stmtlist);
+    return ifst;
+}
+
+extern "C" void * CreateWhileStmt(void *cond, void *stmtlist)
+{
+    WhileStmt* wst = new WhileStmt((Numerical*)cond, (StatementList*)stmtlist);
+    return wst;
+}
+
+extern "C" void * CreatePrintStmt(void *plist)
+{
+    // @todo
+    return plist;
+}
+
+extern "C" void * CreateAssignStatement(const char *name, void *expr)
+{
+    // @todo
+    return expr;
+}
+
 extern "C" void PushToStack(void *expr)
 {
-    ToCleanUp.push((Expr*) expr);
+    ToCleanUp.push((Statement*) expr);
 }
 
-extern "C" void PushToPrintStack(void *pl)
-{
-    ToCleanUpPrint.push((PrintList *) pl);
-}
-
-extern "C" void PrintExpr(void *expr)
+/*extern "C" void PrintExpr(void *expr)
 {
     Expr *e = (Expr *)expr;
     e->Evaluate();
@@ -123,7 +155,7 @@ extern "C" void AssignVariable(const char *name, void *expr)
 {
     SymbolTable &s = SymbolTable::GetInstance();
     s.AddVar(name, (Numerical *) expr);
-}
+    }*/
 
 extern "C" void * AddPrintable(void *plist, void *expr)
 {
@@ -138,7 +170,14 @@ extern "C" void * CreatePrintList()
     return p;
 }
 
-extern "C" void PrintPrintList(void *plist)
+extern "C" void ExecuteStatement(void *stmt)
+{
+    Statement* s = (Statement*)stmt;
+    s->Execute();
+}
+
+
+/*extern "C" void PrintPrintList(void *plist)
 {
     PrintList *p = (PrintList *)plist;
     std::cout << *p << std::endl;
@@ -148,10 +187,12 @@ extern "C" void * CreateIf(void *cond, void *stmts)
 {
 	IfStmt *p = new IfStmt((Numerical *)cond, (StatementList *)stmts);
 	return p;
-} 
+    } */
 
-extern "C" void PrintUserSupport(const char *command)
+
+extern "C" void * CreateUserCommand(const char *command)
 {
+    // @TODO this should be extrapolated into a Statement class
     if(!strcmp(command, "exit"))
     {
         // this gave me an error (exit not declared)
@@ -181,5 +222,8 @@ extern "C" void PrintUserSupport(const char *command)
         SymbolTable &theTable = SymbolTable::GetInstance();
         theTable.Clear();
     }
+
+    // DUMMY FOR NOW
+    return NULL;
 }
 

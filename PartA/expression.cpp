@@ -19,8 +19,7 @@ extern "C" {
 
 }
 
-extern std::stack<Expr*> ToCleanUp;
-extern std::stack<Expr*> ToCleanUpPrint;
+extern std::stack<Statement*> ToCleanUp;
 
 int main(int argc, char **argv)
 {
@@ -55,14 +54,9 @@ int main(int argc, char **argv)
     } while (!feof(yyin));
 
     while (!ToCleanUp.empty()) {
-        Expr *e = ToCleanUp.top();
+        Statement *e = ToCleanUp.top();
         delete e;
         ToCleanUp.pop();
-    }
-    while (!ToCleanUpPrint.empty()) {
-        Expr *e = ToCleanUpPrint.top();
-        delete e;
-        ToCleanUpPrint.pop();
     }
 
     return 0;

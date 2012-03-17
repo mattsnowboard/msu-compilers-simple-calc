@@ -24,35 +24,36 @@
 %%
 
 PROGRAM : PROGRAM '\n' {}
-        | PROGRAM '\n' STMT {/* Execute */}
-        | STMT {/* Execute here*/}
+        | PROGRAM '\n' STMT { ExecuteStatement($3); PushToStack($3); }
+        | STMT { ExecuteStatement($1); PushToStack($1); }
         | {}
 
-STMTS : STMTS '\n'	{}
-      | STMTS '\n' STMT  {}
-      | STMT  {}
+STMTS : STMTS '\n'	{ $$ = $1; }
+      | STMTS '\n' STMT  { $$ = AddStatementToList($1, $3); }
+      | STMT  { $$ = CreateStatementList($1); }
       | {}
 	 
-STMT : DECL  {}
-     | EXPRESSION {PrintExpr($1); PushToStack($1);}
-	 | OUTPUT {PrintPrintList($1);}
-	 | USERSUPPORT {PrintUserSupport($1);}
-	 | IFSTMT {}
-	 | WHILESTMT {}
+STMT : DECL  { $$ = $1; }
+     | EXPRESSION { $$ = $1; }
+	 | OUTPUT { $$ = $1; }
+	 | USERSUPPORT { $$ = $1; }
+	 | IFSTMT { $$ = $1; }
+	 | WHILESTMT { $$ = $1; }
 		
-IFSTMT : IF '(' EXPRESSION ')' '\n' '{' '\n' STMTS '}' {/*$$ = CreateIf($3, $6);*/}
-WHILESTMT : WHILE '(' EXPRESSION ')' '\n' '{' '\n' STMTS '}' {/*$$ = CreateWhile($3, $6);*/}
-
-DECL : VAR ASSIGN EXPRESSION  {
-    AssignVariable($1, $3);
-    // NOTE: we don't clean up EXPR, it is owned by SymbolTable
+IFSTMT : IF '(' EXPRESSION ')' '\n' '{' '\n' STMTS '}' {
+    $$ = CreateIfStmt($3, $8);
+}
+WHILESTMT : WHILE '(' EXPRESSION ')' '\n' '{' '\n' STMTS '}' {
+    $$ = CreateWhileStmt($3, $8);
 }
 
-OUTPUT : PRINT PRINTSTRING  {$$ = $2; PushToPrintStack($2);}
-OUTPUT : PRINT PRINTLINE {$$ = $2; PushToPrintStack($2);}
+DECL : VAR ASSIGN EXPRESSION  { $$ = CreateAssignStatement($1, $3); }
+
+OUTPUT : PRINT PRINTSTRING  { $$ = CreatePrintStmt($2); }
+OUTPUT : PRINT PRINTLINE { $$ = CreatePrintStmt($2); }
 OUTPUT : PRINT {
-    $$ = AddPrintable(CreatePrintList(), CreateString(" "));
-    PushToPrintStack($$);
+    $$ = CreatePrintStmt(
+        AddPrintable(CreatePrintList(), CreateString(" ")));
 }
 
 PRINTSTRING : PRINTLINE STRING {$$ = AddPrintable($1, CreateString($2));}

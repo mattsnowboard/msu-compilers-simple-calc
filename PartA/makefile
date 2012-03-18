@@ -26,7 +26,7 @@ y.tab.c y.tab.h: expression.y
 y.tab.o: y.tab.c y.tab.h
 	gcc -c y.tab.c
 
-expression.o: expression.cpp y.tab.h Expr.h ExitException.h
+expression.o: expression.cpp y.tab.h Expr.h ExitException.h DotStatementVisitor.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c expression.cpp
 
 # dependency stuff

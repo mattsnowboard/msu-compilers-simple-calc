@@ -174,7 +174,9 @@ extern "C" void * CreatePrintList()
 extern "C" void ExecuteStatement(void *stmt)
 {
     Statement* s = (Statement*)stmt;
-    s->Execute();
+    if (s) {
+        s->Execute();
+    }
 }
 
 
@@ -200,6 +202,9 @@ extern "C" void * CreateUserCommand(const char *command)
         // I'm tryign an exception approach but revert if you have a better
         // idea
         //exit(1);
+
+        // @todo This would be in the EXECUTE function
+        // as it is it causes problems
         throw ExitException();
     }
     if(!strcmp(command, "help"))

@@ -1,5 +1,6 @@
 #include "DotStatementVisitor.h"
 
+#include "Program.h"
 #include "Add.h"
 #include "AssignStmt.h"
 #include "Divide.h"
@@ -20,6 +21,22 @@
 
 #include "Binary.h"
 #include "Unary.h"
+
+void DotStatementVisitor::Visit(const Program &p)
+{
+    _out << "digraph {" << std::endl;
+
+    Program::ProgramListT all = p.GetStatements();
+    for (Program::ProgramListT::iterator it = all.begin();
+         it != all.end();
+         ++it)
+    {
+        _parent = "\"\"";
+        (*it)->Accept(*this);
+    }
+
+    _out << "}" << std::endl;
+}
 
 void DotStatementVisitor::Visit(const Add &a)
 {
@@ -57,14 +74,31 @@ void DotStatementVisitor::Visit(const IfStmt & i)
 {
     std::string current(GetAddressAsString(i));
     _out << "\t" << current << "[label=\"if\"]" << std::endl;
-    _out << _parent << "->" << current << " " << _edgeLabel << std::endl;
+    _out << "\t" << _parent << "->" << current << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
 
     _parent = current;
     _edgeLabel = "[label=\"condition\"]";
     i.GetCondition()->Accept(*this);
+    _edgeLabel = "";
 
     _parent = current;
-    //i.GetStatements()->Accept(*this);
+    // create a dummy node to hold a block of statements
+    current = current.substr(0, current.size() - 1) + "_block\"";
+    _out << "\t" << current << "[label=\"{}\"]" << std::endl;
+    _out << "\t" << _parent << "->" << current << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
+
+    const StatementList *slist = i.GetStatements();
+    StatementList::ListT list = slist->GetStatements();
+    for (StatementList::ListT::iterator it = list.begin();
+         it != list.end();
+         ++it) {
+        _parent = current;
+        (*it)->Accept(*this);
+    }
 }
 
 void DotStatementVisitor::Visit(const LessThan & l)
@@ -104,7 +138,9 @@ void DotStatementVisitor::Visit(const String &s)
     std::string current(GetAddressAsString(s));
     _out << "\t" << current << "[label=\"<string, " << s.GetString() << ">\"]"
          << std::endl;
-    _out << _parent << "->" << current << " " << _edgeLabel << std::endl;
+    _out << "\t" << _parent << "->" << current << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
 }
 
 void DotStatementVisitor::Visit(const Subtract &s)
@@ -123,7 +159,9 @@ void DotStatementVisitor::Visit(const Value & v)
     std::string current(GetAddressAsString(v));
     _out << "\t" << current << "[label=\"<value, " << v.Get() << ">\"]"
          << std::endl;
-    _out << _parent << "->" << current << " " << _edgeLabel << std::endl;
+    _out << "\t" << _parent << "->" << current << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
 }
 
 void DotStatementVisitor::Visit(const Variable & v)
@@ -138,22 +176,43 @@ void DotStatementVisitor::Visit(const WhileStmt & w)
 {
     std::string current(GetAddressAsString(w));
     _out << "\t" << current << "[label=\"while\"]" << std::endl;
-    _out << _parent << "->" << current << " " << _edgeLabel << std::endl;
+    _out << "\t" << _parent << "->" << current << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
 
     _parent = current;
     _edgeLabel = "[label=\"condition\"]";
     w.GetCondition()->Accept(*this);
+    _edgeLabel = "";
 
     _parent = current;
-    //w.GetStatements()->Accept(*this);
+    // create a dummy node to hold a block of statements
+    current = current.substr(0, current.size() - 1) + "_block\"";
+    _out << "\t" << current << "[label=\"{}\"]" << std::endl;
+    _out << "\t" << _parent << "->" << current << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
+
+    const StatementList *slist = w.GetStatements();
+    StatementList::ListT list = slist->GetStatements();
+    for (StatementList::ListT::iterator it = list.begin();
+         it != list.end();
+         ++it) {
+        _parent = current;
+        (*it)->Accept(*this);
+    }
 }
 
 void DotStatementVisitor::VisitBinary(const Binary &b,
                                       const std::string &newParent)
 {
-    _out << _parent << "->" << newParent << " " << _edgeLabel << std::endl;
+    _out << "\t" << _parent << "->" << newParent << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
+
     _parent = newParent;
     b.GetLeft()->Accept(*this);
+
     _parent = newParent;
     b.GetRight()->Accept(*this);
 }
@@ -161,7 +220,10 @@ void DotStatementVisitor::VisitBinary(const Binary &b,
 void DotStatementVisitor::VisitUnary(const Unary &u,
                                      const std::string &newParent)
 {
-    _out << _parent << "->" << newParent << " " << _edgeLabel << std::endl;
+    _out << "\t" << _parent << "->" << newParent << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
+
     _parent = newParent;
     u.GetChild()->Accept(*this);
 }

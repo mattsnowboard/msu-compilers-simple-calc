@@ -9,4 +9,8 @@ simplecalc
 .D_TARGET
 .deps
 PartA/.deps
+# submission
 simplecalc_team6.tgz
+# dotfiles
+*.dot
+*.png

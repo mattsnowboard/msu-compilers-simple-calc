@@ -24,8 +24,8 @@
 %%
 
 PROGRAM : PROGRAM '\n' {}
-        | PROGRAM '\n' STMT { ExecuteStatement($3); PushToStack($3); }
-        | STMT { ExecuteStatement($1); PushToStack($1); }
+        | PROGRAM '\n' STMT { ExecuteStatement($3); }
+        | STMT { ExecuteStatement($1); }
         | {}
 
 STMTS : STMTS '\n'	{ $$ = $1; }

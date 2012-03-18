@@ -20,6 +20,10 @@ public:
 
     // Support the Visitor Pattern
     virtual void Accept(StatementVisitor &v) const = 0;
+
+private:
+    Statement(const Statement &s);
+    Statement& operator=(const Statement &s);
 };
 
 #endif

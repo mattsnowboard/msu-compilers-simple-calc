@@ -3,6 +3,8 @@
 #include <cstring>
 
 
+#include "Program.h"
+
 #include "Add.h"
 #include "Subtract.h"
 #include "Multiply.h"
@@ -28,7 +30,8 @@ extern "C" {
 #include "functions.h"    
 }
 
-std::stack<Statement*> ToCleanUp;
+//std::stack<Statement*> ToCleanUp;
+Program program;
 
 extern "C" void * CreateNegate(void *expr)
 {
@@ -140,10 +143,10 @@ extern "C" void * CreateAssignStatement(const char *name, void *expr)
     return expr;
 }
 
-extern "C" void PushToStack(void *expr)
+/*extern "C" void PushToStack(void *expr)
 {
     ToCleanUp.push((Statement*) expr);
-}
+    }*/
 
 /*extern "C" void PrintExpr(void *expr)
 {
@@ -174,9 +177,8 @@ extern "C" void * CreatePrintList()
 extern "C" void ExecuteStatement(void *stmt)
 {
     Statement* s = (Statement*)stmt;
-    if (s) {
-        s->Execute();
-    }
+    program.AddStatement(s);
+    program.ExecuteTop();
 }
 
 

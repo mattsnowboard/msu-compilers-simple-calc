@@ -144,15 +144,9 @@ void * CreatePrintList();
 void * CreateUserCommand(const char *command);
 
 /**
- * Execute a Statement
+ * Add Statement to Program and Execute
  * @param Statement* stmt
  */
 void ExecuteStatement(void *stmt);
-
-/**
- * Push a Statement* to the cleanup stack for deletion
- * @param Statement* stmt
- */
-void PushToStack(void *stmt);
 
 #endif

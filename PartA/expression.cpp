@@ -22,7 +22,8 @@ extern "C" {
 
 }
 
-extern std::stack<Statement*> ToCleanUp;
+//extern std::stack<Statement*> ToCleanUp;
+extern Program program;
 
 int main(int argc, char **argv)
 {
@@ -78,18 +79,19 @@ int main(int argc, char **argv)
                           << std::endl;
             } else {
                 DotStatementVisitor dsv(dotfile);
+                dsv.Visit(program);
                 // create the dot file by visiting the root
             }
         }
     }
 
-    while (!ToCleanUp.empty()) {
+/*    while (!ToCleanUp.empty()) {
         Statement *e = ToCleanUp.top();
         if (e) {
             delete e;
         }
         ToCleanUp.pop();
-    }
+        }*/
 
     return 0;
 }

@@ -50,6 +50,14 @@ public:
         return s;
     }
 
+    typedef std::list<const Statement*> ListT;
+
+    ListT GetStatements() const
+    {
+        ListT cret(_list.begin(), _list.end());
+        return cret;
+    }
+
 private:
     std::list<Statement*> _list;
 };

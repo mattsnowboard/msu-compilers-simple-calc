@@ -1,6 +1,8 @@
 #ifndef _STATEMENTVISITOR_H
 #define _STATEMENTVISITOR_H
 
+class Program;
+
 class Add;
 class AssignStmt;
 class Divide;
@@ -22,6 +24,7 @@ class WhileStmt;
 class StatementVisitor
 {
 public:
+    virtual void Visit(const Program &p) = 0;
     virtual void Visit(const Add &a) = 0;
     virtual void Visit(const AssignStmt &a) = 0;
     virtual void Visit(const Divide &d) = 0;

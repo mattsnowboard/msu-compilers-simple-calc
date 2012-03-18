@@ -17,6 +17,7 @@ public:
         _out(out), _parent("\"\"")
     {}
 
+    virtual void Visit(const Program &p);
     virtual void Visit(const Add &a);
     virtual void Visit(const AssignStmt &a);
     virtual void Visit(const Divide &d);
@@ -63,6 +64,7 @@ private:
     /// Current parent string we are processing
     std::string _parent;
     /// Keep a state for labels on children
+    /// This gets cleared everytime so it only gets set on one edge
     std::string _edgeLabel;
 };
 

@@ -22,6 +22,11 @@ public:
             _value = -_child->Get();
         }
     }
+
+    virtual void Accept(StatementVisitor &v) const
+    {
+        v.Visit(*this);
+    }
 };
 
 #endif

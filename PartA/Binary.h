@@ -27,6 +27,16 @@ public:
         }
     }
 
+    Numerical const* GetLeft() const
+    {
+        return _left;
+    }
+
+    Numerical const* GetRight() const
+    {
+        return _right;
+    }
+
 protected:
     Numerical *_left;
     Numerical *_right;

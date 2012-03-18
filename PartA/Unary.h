@@ -20,6 +20,11 @@ public:
         }
     }
 
+    Numerical const* GetChild() const
+    {
+        return _child;
+    }
+
 protected:
     Numerical *_child;
 };

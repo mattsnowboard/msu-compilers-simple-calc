@@ -32,6 +32,10 @@ public:
         return wstmt;
     }
 
+    virtual void Accept(StatementVisitor &v) const
+    {
+        v.Visit(*this);
+    }
 };
 
 #endif

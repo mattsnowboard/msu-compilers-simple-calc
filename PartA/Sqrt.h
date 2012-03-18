@@ -23,6 +23,11 @@ public:
             _value = std::sqrt(_child->Get());
         }
     }
+
+    virtual void Accept(StatementVisitor &v) const
+    {
+        v.Visit(*this);
+    }
 };
 
 #endif

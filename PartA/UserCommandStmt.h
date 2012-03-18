@@ -16,9 +16,15 @@ public:
         // @todo
     }
 
-    virtual AssignStmt* Clone()
+    virtual UserCommandStmt* Clone()
     {
         // @todo
+        return this;
+    }
+
+    virtual void Accept(StatementVisitor &v) const
+    {
+        v.Visit(*this);
     }
 
 protected:

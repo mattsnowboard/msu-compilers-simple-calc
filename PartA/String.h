@@ -10,6 +10,8 @@ public:
 
     String(std::string s) : _value(s.substr(1,s.length()-2)) {}
 
+    std::string GetString() const { return _value; }
+
     virtual String* Clone()
     {
         std::string temp(_value);
@@ -20,6 +22,11 @@ public:
     // NOP
     virtual void Evaluate()
     {
+    }
+
+    virtual void Accept(StatementVisitor &v) const
+    {
+        v.Visit(*this);
     }
 
 private:

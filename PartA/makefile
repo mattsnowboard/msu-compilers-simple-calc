@@ -1,5 +1,5 @@
 
-SRCS := Numerical.cpp function.cpp SymbolTable.cpp
+SRCS := Numerical.cpp function.cpp SymbolTable.cpp DotStatementVisitor.cpp
 OBJS := $(SRCS:%.cpp=%.o)
 
 CXXFLAGS = -Wall -g
@@ -26,7 +26,7 @@ y.tab.c y.tab.h: expression.y
 y.tab.o: y.tab.c y.tab.h
 	gcc -c y.tab.c
 
-expression.o: expression.cpp y.tab.h Expr.h
+expression.o: expression.cpp y.tab.h Expr.h ExitException.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c expression.cpp
 
 # dependency stuff

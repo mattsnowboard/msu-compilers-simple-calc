@@ -30,6 +30,11 @@ public:
         IfStmt *ifstmt = new IfStmt(c, s);
         return ifstmt;
     }
+
+    virtual void Accept(StatementVisitor &v) const
+    {
+        v.Visit(*this);
+    }
 };
 
 #endif

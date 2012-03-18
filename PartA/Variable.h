@@ -47,6 +47,11 @@ public:
         }
     }
 
+    virtual void Accept(StatementVisitor &v) const
+    {
+        v.Visit(*this);
+    }
+
 protected:
     std::string _name;
     // this may prove useful...or we can delete it safely

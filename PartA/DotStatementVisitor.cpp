@@ -1,0 +1,167 @@
+#include "DotStatementVisitor.h"
+
+#include "Add.h"
+#include "AssignStmt.h"
+#include "Divide.h"
+#include "Exponent.h"
+#include "GreaterThan.h"
+#include "IfStmt.h"
+#include "LessThan.h"
+#include "Multiply.h"
+#include "Negate.h"
+#include "PrintStmt.h"
+#include "Sqrt.h"
+#include "String.h"
+#include "Subtract.h"
+#include "UserCommandStmt.h"
+#include "Value.h"
+#include "Variable.h"
+#include "WhileStmt.h"
+
+#include "Binary.h"
+#include "Unary.h"
+
+void DotStatementVisitor::Visit(const Add &a)
+{
+    std::string current(GetAddressAsString(a));
+    _out << "\t" << current << "[label=\"+\"]" << std::endl;
+    VisitBinary(a, current);
+}
+
+void DotStatementVisitor::Visit(const AssignStmt & a)
+{
+}
+
+void DotStatementVisitor::Visit(const Divide & d)
+{
+    std::string current(GetAddressAsString(d));
+    _out << "\t" << current << "[label=\"/\"]" << std::endl;
+    VisitBinary(d, current);
+}
+
+void DotStatementVisitor::Visit(const Exponent & e)
+{
+    std::string current(GetAddressAsString(e));
+    _out << "\t" << current << "[label=\"^\"]" << std::endl;
+    VisitBinary(e, current);
+}
+
+void DotStatementVisitor::Visit(const GreaterThan & g)
+{
+    std::string current(GetAddressAsString(g));
+    _out << "\t" << current << "[label=\">\"]" << std::endl;
+    VisitBinary(g, current);
+}
+
+void DotStatementVisitor::Visit(const IfStmt & i)
+{
+    std::string current(GetAddressAsString(i));
+    _out << "\t" << current << "[label=\"if\"]" << std::endl;
+    _out << _parent << "->" << current << " " << _edgeLabel << std::endl;
+
+    _parent = current;
+    _edgeLabel = "[label=\"condition\"]";
+    i.GetCondition()->Accept(*this);
+
+    _parent = current;
+    //i.GetStatements()->Accept(*this);
+}
+
+void DotStatementVisitor::Visit(const LessThan & l)
+{
+    std::string current(GetAddressAsString(l));
+    _out << "\t" << current << "[label=\"<\"]" << std::endl;
+    VisitBinary(l, current);
+}
+
+void DotStatementVisitor::Visit(const Multiply & m)
+{
+    std::string current(GetAddressAsString(m));
+    _out << "\t" << current << "[label=\"*\"]" << std::endl;
+    VisitBinary(m, current);
+}
+
+void DotStatementVisitor::Visit(const Negate & n)
+{
+    std::string current(GetAddressAsString(n));
+    _out << "\t" << current << "[label=\"-\"]" << std::endl;
+    VisitUnary(n, current);
+}
+
+void DotStatementVisitor::Visit(const PrintStmt & p)
+{
+}
+
+void DotStatementVisitor::Visit(const Sqrt & s)
+{
+    std::string current(GetAddressAsString(s));
+    _out << "\t" << current << "[label=\"sqrt\"]" << std::endl;
+    VisitUnary(s, current);
+}
+
+void DotStatementVisitor::Visit(const String &s)
+{
+    std::string current(GetAddressAsString(s));
+    _out << "\t" << current << "[label=\"<string, " << s.GetString() << ">\"]"
+         << std::endl;
+    _out << _parent << "->" << current << " " << _edgeLabel << std::endl;
+}
+
+void DotStatementVisitor::Visit(const Subtract &s)
+{
+    std::string current(GetAddressAsString(s));
+    _out << "\t" << current << "[label=\"-\"]" << std::endl;
+    VisitBinary(s, current);
+}
+
+void DotStatementVisitor::Visit(const UserCommandStmt & u)
+{
+}
+
+void DotStatementVisitor::Visit(const Value & v)
+{
+    std::string current(GetAddressAsString(v));
+    _out << "\t" << current << "[label=\"<value, " << v.Get() << ">\"]"
+         << std::endl;
+    _out << _parent << "->" << current << " " << _edgeLabel << std::endl;
+}
+
+void DotStatementVisitor::Visit(const Variable & v)
+{
+    std::string current(GetAddressAsString(v));
+    _out << "\t" << current << "[label=\"<variable, " << v.GetName() << ">\"]"
+         << std::endl;
+    VisitUnary(v, current);
+}
+
+void DotStatementVisitor::Visit(const WhileStmt & w)
+{
+    std::string current(GetAddressAsString(w));
+    _out << "\t" << current << "[label=\"while\"]" << std::endl;
+    _out << _parent << "->" << current << " " << _edgeLabel << std::endl;
+
+    _parent = current;
+    _edgeLabel = "[label=\"condition\"]";
+    w.GetCondition()->Accept(*this);
+
+    _parent = current;
+    //w.GetStatements()->Accept(*this);
+}
+
+void DotStatementVisitor::VisitBinary(const Binary &b,
+                                      const std::string &newParent)
+{
+    _out << _parent << "->" << newParent << " " << _edgeLabel << std::endl;
+    _parent = newParent;
+    b.GetLeft()->Accept(*this);
+    _parent = newParent;
+    b.GetRight()->Accept(*this);
+}
+
+void DotStatementVisitor::VisitUnary(const Unary &u,
+                                     const std::string &newParent)
+{
+    _out << _parent << "->" << newParent << " " << _edgeLabel << std::endl;
+    _parent = newParent;
+    u.GetChild()->Accept(*this);
+}

@@ -18,7 +18,13 @@ public:
 
     virtual AssignStmt* Clone()
     {
-        // @todo
+        // @todo 
+        return this;
+    }
+
+    virtual void Accept(StatementVisitor &v) const
+    {
+        v.Visit(*this);
     }
 
     ~AssignStmt()

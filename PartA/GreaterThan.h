@@ -25,6 +25,11 @@ public:
             _value = (_left->Get() > _right->Get()) ? 1 : 0;
         }
     }
+
+    virtual void Accept(StatementVisitor &v) const
+    {
+        v.Visit(*this);
+    }
 };
 
 #endif

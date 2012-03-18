@@ -20,6 +20,12 @@ public:
     virtual PrintStmt* Clone()
     {
         // @todo
+        return this;
+    }
+
+    virtual void Accept(StatementVisitor &v) const
+    {
+        v.Visit(*this);
     }
 
     ~PrintStmt()

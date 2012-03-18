@@ -23,6 +23,14 @@ public:
         }
     }
 
+    Numerical const* GetCondition() const {
+        return _cond;
+    }
+
+    StatementList const* GetStatements() const {
+        return _stmts;
+    }
+
 protected:
     Numerical *_cond;
     StatementList *_stmts;

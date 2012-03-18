@@ -4,6 +4,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "StatementVisitor.h"
+
 class Statement
 {
 public:
@@ -13,8 +15,11 @@ public:
 
     virtual void Execute() = 0;
 
+    // Allow copying a Statement tree
     virtual Statement* Clone() = 0;
 
+    // Support the Visitor Pattern
+    virtual void Accept(StatementVisitor &v) const = 0;
 };
 
 #endif

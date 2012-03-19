@@ -36,7 +36,7 @@ STMTS : STMTS '\n'	{ $$ = $1; }
 STMT : DECL  { $$ = $1; }
      | EXPRESSION { $$ = $1; }
 	 | OUTPUT { $$ = $1; }
-	 | USERSUPPORT { $$ = $1; }
+	 | USERSUPPORT { $$ = CreateUserCommand($1); }
 	 | IFSTMT { $$ = $1; }
 	 | WHILESTMT { $$ = $1; }
 		

@@ -16,6 +16,9 @@ print "The result of 100 + 100 * 1000 / 2000 should be 150"
 print
 print "The result of 5+7+16-5+7/6 should be 24.166666667"
 5+7+16-5+7/6
+print
+print "The result of (2+3)^3-1 should be 124"
+(2+3)^3-1
 
 print
 

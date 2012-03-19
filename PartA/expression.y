@@ -83,7 +83,7 @@ UNARY : '-' NUMBER {$$ = CreateNegate($2);}
 UNARY : SQRT NUMBER {$$ = CreateSqrt($2);}
 UNARY : NUMBER {$$ = $1;}
 
-NUMBER : '(' EXPR ')'  {$$ = $2;}
+NUMBER : '(' EXPRESSION ')'  {$$ = $2;}
 NUMBER : NUM  {$$ = CreateDouble($1);}
 NUMBER : VAR  {$$ = CreateVariable($1);}
 

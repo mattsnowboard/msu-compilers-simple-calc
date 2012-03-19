@@ -1,6 +1,7 @@
 #ifndef _ASSIGNSTMT_H
 #define _ASSIGNSTMT_H
 
+#include "SymbolTable.h"
 #include "Statement.h"
 
 class AssignStmt : public Statement
@@ -13,13 +14,31 @@ public:
 
     virtual void Execute()
     {
-        // @todo
+
+       if (!_value) {
+            SymbolTable &s = SymbolTable::GetInstance();
+            if (s.DoesExist(_name)) {
+                Numerical *temp = s.GetVal(_name);
+                _value = temp->Clone();
+            }
+            else {
+                _value = 0;
+            }
+        if (_value)
+        {
+            _value->Evaluate(); 
+            
+        }
+	}
+
     }
 
     virtual AssignStmt* Clone()
     {
-        // @todo 
+        AssignStmt *a = new AssignStmt(_name, _value);
+        a->_value = (_value) ? _value->Clone() : NULL;
         return this;
+
     }
 
     virtual void Accept(StatementVisitor &v) const

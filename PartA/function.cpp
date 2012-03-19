@@ -24,6 +24,7 @@
 #include "SymbolTable.h"
 #include "PrintList.h"
 #include "UserCommandStmt.h"
+#include "AssignStmt.h"
 
 extern "C" {
 #include "functions.h"    
@@ -138,14 +139,9 @@ extern "C" void * CreatePrintStmt(void *plist)
 
 extern "C" void * CreateAssignStatement(const char *name, void *expr)
 {
-    // @todo
-    return expr;
+    AssignStmt* asn = new AssignStmt(name, (Numerical*)expr);
+    return asn;
 }
-
-/*extern "C" void PushToStack(void *expr)
-{
-    ToCleanUp.push((Statement*) expr);
-    }*/
 
 /*extern "C" void PrintExpr(void *expr)
 {

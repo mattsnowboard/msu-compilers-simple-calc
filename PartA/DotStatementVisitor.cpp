@@ -47,6 +47,22 @@ void DotStatementVisitor::Visit(const Add &a)
 
 void DotStatementVisitor::Visit(const AssignStmt & a)
 {
+    std::string current(GetAddressAsString(a));
+    _out << "\t" << current << "[label=\"Assign\"]"
+         << std::endl;
+    _out << "\t" << _parent << "->" << current << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
+
+    _parent = current;
+    _edgeLabel = "[label=\"variable\"]";
+    _out << "\t" << _parent << "->" << a.GetName() << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
+
+    _parent = current;
+    a.GetValue()->Accept(*this);
+    _edgeLabel = "";
 }
 
 void DotStatementVisitor::Visit(const Divide & d)
@@ -152,6 +168,12 @@ void DotStatementVisitor::Visit(const Subtract &s)
 
 void DotStatementVisitor::Visit(const UserCommandStmt & u)
 {
+    std::string current(GetAddressAsString(u));
+    _out << "\t" << current << "[label=\"<cmd, " << u.GetCommand() << ">\"]"
+         << std::endl;
+    _out << "\t" << _parent << "->" << current << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
 }
 
 void DotStatementVisitor::Visit(const Value & v)

@@ -3,6 +3,7 @@
 
 #include "SymbolTable.h"
 #include "Statement.h"
+#include "Value.h"
 
 class AssignStmt : public Statement
 {
@@ -14,31 +15,21 @@ public:
 
     virtual void Execute()
     {
-
-       if (!_value) {
+       if (_value) {
             SymbolTable &s = SymbolTable::GetInstance();
-            if (s.DoesExist(_name)) {
-                Numerical *temp = s.GetVal(_name);
-                _value = temp->Clone();
-            }
-            else {
-                _value = 0;
-            }
-        if (_value)
-        {
-            _value->Evaluate(); 
-            
+            // create a new Value of the current Numerical value
+            // that new Value will be owned by SymbolTable
+            // But this owns its _value pointer now
+            _value->Evaluate();
+            s.AddVar(_name, new Value(_value->Get()));
         }
 	}
 
-    }
-
     virtual AssignStmt* Clone()
     {
-        AssignStmt *a = new AssignStmt(_name, _value);
-        a->_value = (_value) ? _value->Clone() : NULL;
-        return this;
-
+        Numerical *v = (_value) ? _value->Clone() : NULL;
+        AssignStmt *a = new AssignStmt(_name, v);
+        return a;
     }
 
     virtual void Accept(StatementVisitor &v) const
@@ -46,10 +37,22 @@ public:
         v.Visit(*this);
     }
 
+    const std::string& GetName() const
+    {
+        return _name;
+    }
+
+    Numerical const* GetValue() const
+    {
+        return _value;
+    }
+
     ~AssignStmt()
     {
-        // @todo Maybe don't need to clean this, I think SymbolTable will
-        // still own the pointer to _value...
+        // actually, we do need to own _value
+        if (_value) {
+            delete _value;
+        }
     }
 
 protected:

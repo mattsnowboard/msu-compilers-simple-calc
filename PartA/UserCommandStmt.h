@@ -43,6 +43,11 @@ public:
         
     }
 
+    const std::string& GetCommand() const
+    {
+        return _command;
+    }
+
     virtual UserCommandStmt* Clone()
     {
         UserCommandStmt* cmd = new UserCommandStmt(_command.c_str());

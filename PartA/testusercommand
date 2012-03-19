@@ -1,0 +1,17 @@
+
+
+a := 5
+
+print "a is " a
+
+clear
+
+print "cleared variables"
+print "a is " a
+
+print
+help
+
+print
+print "Exiting"
+exit

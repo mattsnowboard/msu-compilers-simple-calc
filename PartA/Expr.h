@@ -19,6 +19,9 @@ public:
 
     virtual void Evaluate() = 0;
 
+    // this makes the Clone in PrintList happy
+    virtual Expr* Clone() = 0;
+
     /**
      * Print an arbitrary expression to a stream
      */

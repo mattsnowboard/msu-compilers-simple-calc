@@ -4,6 +4,8 @@
 #include "Statement.h"
 #include "PrintList.h"
 
+#include <iostream>
+
 class PrintStmt : public Statement
 {
 public:
@@ -14,13 +16,14 @@ public:
 
     virtual void Execute()
     {
-        // @todo
+        std::cout << *_list << std::endl;
     }
 
     virtual PrintStmt* Clone()
     {
-        // @todo
-        return this;
+        PrintList *l = (_list) ? _list->Clone() : NULL;
+        PrintStmt *p = new PrintStmt(l);
+        return p;
     }
 
     virtual void Accept(StatementVisitor &v) const
@@ -28,9 +31,16 @@ public:
         v.Visit(*this);
     }
 
+    PrintList const* GetList() const
+    {
+        return _list;
+    }
+
     ~PrintStmt()
     {
-        // @todo cleanup _list probably
+        if (_list) {
+            delete _list;
+        }
     }
 
 protected:

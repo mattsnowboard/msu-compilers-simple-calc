@@ -2,12 +2,16 @@
 a:= 1 
 b:=7
 
-while (a > 2)
+print "starting a loop"
+while (a < 2)
 {
   a := a + 1
+  print a
 }
 
-while (a != b +5)
+print "another loop"
+while (a < b +5)
 {
   a := a + 1
+  print a
 }

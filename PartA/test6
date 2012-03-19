@@ -8,3 +8,4 @@ a:=(9*9/9 + 9 )/2
 a:=sqrt a 		
 print a
 #This results in a memory issue and seg faults
+# bug fixed

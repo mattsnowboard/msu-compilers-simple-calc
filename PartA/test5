@@ -2,12 +2,10 @@
 a:= 0 
 b:=7
 
-while (a + 5 != b)
+print "testing while loop"
+while (a + 5 < b)
 {
   a := a + 1
+  print a
 }
 
-while (a != b +5)
-{
-  a := a + 1
-}

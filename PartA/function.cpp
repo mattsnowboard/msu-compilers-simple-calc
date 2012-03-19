@@ -25,6 +25,7 @@
 #include "PrintList.h"
 #include "UserCommandStmt.h"
 #include "AssignStmt.h"
+#include "PrintStmt.h"
 
 extern "C" {
 #include "functions.h"    
@@ -133,8 +134,8 @@ extern "C" void * CreateWhileStmt(void *cond, void *stmtlist)
 
 extern "C" void * CreatePrintStmt(void *plist)
 {
-    // @todo
-    return plist;
+    PrintStmt* pst = new PrintStmt((PrintList*) plist);
+    return pst;
 }
 
 extern "C" void * CreateAssignStatement(const char *name, void *expr)
@@ -142,19 +143,6 @@ extern "C" void * CreateAssignStatement(const char *name, void *expr)
     AssignStmt* asn = new AssignStmt(name, (Numerical*)expr);
     return asn;
 }
-
-/*extern "C" void PrintExpr(void *expr)
-{
-    Expr *e = (Expr *)expr;
-    e->Evaluate();
-    std::cout << "Answer: " << *e << std::endl;
-}
-
-extern "C" void AssignVariable(const char *name, void *expr)
-{
-    SymbolTable &s = SymbolTable::GetInstance();
-    s.AddVar(name, (Numerical *) expr);
-    }*/
 
 extern "C" void * AddPrintable(void *plist, void *expr)
 {
@@ -175,20 +163,6 @@ extern "C" void ExecuteStatement(void *stmt)
     program.AddStatement(s);
     program.ExecuteTop();
 }
-
-
-/*extern "C" void PrintPrintList(void *plist)
-{
-    PrintList *p = (PrintList *)plist;
-    std::cout << *p << std::endl;
-}
-
-extern "C" void * CreateIf(void *cond, void *stmts) 
-{
-	IfStmt *p = new IfStmt((Numerical *)cond, (StatementList *)stmts);
-	return p;
-    } */
-
 
 extern "C" void * CreateUserCommand(const char *command)
 {

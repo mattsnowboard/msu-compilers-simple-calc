@@ -1,11 +1,21 @@
 
+print "The result of 1 + 1"
 1+1
 
 #
 
+print
+print "The result of (1+20-6)/15 should be 1"
 (1+20-6)/15
+print
+print "The result of 1+20-6/15 should be 20.6"
 1+20-6/15
+print
+print "The result of 100 + 100 * 1000 / 2000 should be 150"
 100 + 100 * 1000 / 2000
+print
+print "The result of 5+7+16-5+7/6 should be 24.166666667"
 5+7+16-5+7/6
 
+print
 

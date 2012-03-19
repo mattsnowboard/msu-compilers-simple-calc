@@ -20,6 +20,8 @@ public:
                 // hopefully this is not an infinite loop, we could implment
                 // a way to break out after a very large number of iterations
                 _stmts->Execute();
+                // DONT FORGET TO RE-EVALUATE
+                _cond->Evaluate();
             }
         }
     }

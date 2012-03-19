@@ -140,6 +140,21 @@ void DotStatementVisitor::Visit(const Negate & n)
 
 void DotStatementVisitor::Visit(const PrintStmt & p)
 {
+    std::string current(GetAddressAsString(p));
+    _out << "\t" << current << "[label=\"print\"]"
+         << std::endl;
+    _out << "\t" << _parent << "->" << current << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
+
+    const PrintList *slist = p.GetList();
+    PrintList::ListT list = slist->GetList();
+    for (PrintList::ListT::iterator it = list.begin();
+         it != list.end();
+         ++it) {
+        _parent = current;
+        (*it)->Accept(*this);
+    }
 }
 
 void DotStatementVisitor::Visit(const Sqrt & s)

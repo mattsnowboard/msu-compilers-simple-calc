@@ -1,23 +1,20 @@
 a := 9
 if(a > 7)
 {
+   print "a > 7 (is " a ")"
    a := 9
    b := 10
 }
 
-if (a = 9) 
+if (a < 10) 
 {
+   print "a < 10 (is " a ")"
    a := 1+4
    b := 9-4
 }
 
-if (a = b)
+if (a > b)
 {
-   if (a + 1 != b)
-   {
-	a := a + 1
-   }
-
-
+   print "a > b (a: " a ", b: " b ")"
 }
 

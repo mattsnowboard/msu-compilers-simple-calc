@@ -1,15 +1,16 @@
-#Blank line here I get a syntax error
+
 a:= 7
 b:= 14
 
+print "Testing the result of c:= a + b, expect 21"
 c:= a + b
 print c
-#this works
 
 a:= 7
 b:= 14
 
+print "Testing the result of a:= a + b, expect 21"
+# self-assignment works again
 a:= a + b
-#this gives me a segmentation fault
 
 print a

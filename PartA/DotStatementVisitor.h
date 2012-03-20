@@ -9,6 +9,7 @@
 
 class Unary;
 class Binary;
+class StatsFunction;
 
 class DotStatementVisitor : public StatementVisitor
 {
@@ -36,6 +37,9 @@ public:
     virtual void Visit(const Variable &v);
     virtual void Visit(const StrVar &v);
     virtual void Visit(const WhileStmt &w);
+    virtual void Visit(const AddFunction &f);
+    virtual void Visit(const MeanFunction &f);
+    virtual void Visit(const StdFunction &f);
 
 private:
 
@@ -59,6 +63,13 @@ private:
      * @param std::string newParent The new _parent string to use
      */
     void VisitUnary(const Unary &u, const std::string &newParent);
+
+    /**
+     * Visit a StatsFunction
+     * @param StatsFunction f
+     * @param std::string newParent The new _parent string to use
+     */
+    void VisitStatsFunc(const StatsFunction &f, const std::string &newParent);
 
     /// Where we write the Dot File
     std::ostream &_out;

@@ -1,4 +1,6 @@
 # This answer is 3.43956044 and this is a comment
+
+print "Here we are expecting " 3.43956044
 (((1 + 9 / 14) * 26 + (14/7) ) / 13) 
 
 

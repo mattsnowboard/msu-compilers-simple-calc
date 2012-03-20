@@ -20,8 +20,13 @@
 #include "StrVar.h"
 #include "WhileStmt.h"
 
+#include "AddFunction.h"
+#include "MeanFunction.h"
+#include "StdFunction.h"
+
 #include "Binary.h"
 #include "Unary.h"
+#include "StatsFunction.h"
 
 void DotStatementVisitor::Visit(const Program &p)
 {
@@ -48,6 +53,22 @@ void DotStatementVisitor::Visit(const Add &a)
 
 void DotStatementVisitor::Visit(const AssignStmt & a)
 {
+    std::string current(GetAddressAsString(a));
+    _out << "\t" << current << "[label=\"Assign\"]"
+         << std::endl;
+    _out << "\t" << _parent << "->" << current << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
+
+    _parent = current;
+    _edgeLabel = "[label=\"variable\"]";
+    _out << "\t" << _parent << "->" << a.GetName() << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
+
+    _parent = current;
+    a.GetValue()->Accept(*this);
+    _edgeLabel = "";
 }
 
 void DotStatementVisitor::Visit(const Divide & d)
@@ -125,6 +146,21 @@ void DotStatementVisitor::Visit(const Negate & n)
 
 void DotStatementVisitor::Visit(const PrintStmt & p)
 {
+    std::string current(GetAddressAsString(p));
+    _out << "\t" << current << "[label=\"print\"]"
+         << std::endl;
+    _out << "\t" << _parent << "->" << current << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
+
+    const PrintList *slist = p.GetList();
+    PrintList::ListT list = slist->GetList();
+    for (PrintList::ListT::iterator it = list.begin();
+         it != list.end();
+         ++it) {
+        _parent = current;
+        (*it)->Accept(*this);
+    }
 }
 
 void DotStatementVisitor::Visit(const Sqrt & s)
@@ -153,6 +189,12 @@ void DotStatementVisitor::Visit(const Subtract &s)
 
 void DotStatementVisitor::Visit(const UserCommandStmt & u)
 {
+    std::string current(GetAddressAsString(u));
+    _out << "\t" << current << "[label=\"<cmd, " << u.GetCommand() << ">\"]"
+         << std::endl;
+    _out << "\t" << _parent << "->" << current << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
 }
 
 void DotStatementVisitor::Visit(const Value & v)
@@ -212,6 +254,27 @@ void DotStatementVisitor::Visit(const WhileStmt & w)
     }
 }
 
+void DotStatementVisitor::Visit(const AddFunction &f)
+{
+    std::string current(GetAddressAsString(f));
+    _out << "\t" << current << "[label=\"add()\"]" << std::endl;
+    VisitStatsFunc(f, current);
+}
+
+void DotStatementVisitor::Visit(const MeanFunction &f)
+{
+    std::string current(GetAddressAsString(f));
+    _out << "\t" << current << "[label=\"mean()\"]" << std::endl;
+    VisitStatsFunc(f, current);
+}
+
+void DotStatementVisitor::Visit(const StdFunction &f)
+{
+    std::string current(GetAddressAsString(f));
+    _out << "\t" << current << "[label=\"std()\"]" << std::endl;
+    VisitStatsFunc(f, current);
+}
+
 void DotStatementVisitor::VisitBinary(const Binary &b,
                                       const std::string &newParent)
 {
@@ -235,4 +298,22 @@ void DotStatementVisitor::VisitUnary(const Unary &u,
 
     _parent = newParent;
     u.GetChild()->Accept(*this);
+}
+
+void DotStatementVisitor::VisitStatsFunc(const StatsFunction &f,
+                                         const std::string &newParent)
+{
+    _out << "\t" << _parent << "->" << newParent << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
+
+
+    const NumericalList *nlist = f.GetList();
+    NumericalList::ListCT list = nlist->Get();
+    for (NumericalList::ListCT::iterator it = list.begin();
+         it != list.end();
+         ++it) {
+        _parent = newParent;
+        (*it)->Accept(*this);
+    }
 }

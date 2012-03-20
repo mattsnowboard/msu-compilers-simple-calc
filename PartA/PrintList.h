@@ -37,7 +37,31 @@ public:
         return out;
     }
 
+    virtual PrintList* Clone()
+    {
+        PrintList *p = new PrintList;
+        for (std::list<Expr*>::const_iterator it = _list.begin();
+             it != _list.end();
+             ++it) {
+            p->AddItem((*it) ? (*it)->Clone() : NULL);
+        }
+        return p;
+    }
+    
+    // return type for a const copy of list
+    typedef std::list<const Expr*> ListT;
+
+    ListT GetList() const
+    {
+        ListT cret(_list.begin(), _list.end());
+        return cret;
+    }
+
 private:
+
+    PrintList(const PrintList&);
+    PrintList& operator=(const PrintList&);
+
     std::list<Expr*> _list;
 };
 

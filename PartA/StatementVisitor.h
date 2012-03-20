@@ -21,6 +21,9 @@ class Value;
 class Variable;
 class StrVar;
 class WhileStmt;
+class AddFunction;
+class MeanFunction;
+class StdFunction;
 
 class StatementVisitor
 {
@@ -44,6 +47,9 @@ public:
     virtual void Visit(const Variable &v) = 0;
     virtual void Visit(const StrVar &v) = 0;
     virtual void Visit(const WhileStmt &w) = 0;
+    virtual void Visit(const AddFunction &f) = 0;
+    virtual void Visit(const MeanFunction &f) = 0;
+    virtual void Visit(const StdFunction &f) = 0;
 };
 
 #endif

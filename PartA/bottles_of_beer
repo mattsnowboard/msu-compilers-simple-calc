@@ -1,0 +1,37 @@
+#
+# This is the example program to print "99 bottles of beer on the wall"
+#
+
+#set up
+bottles := 99
+
+# loop over them all
+while (bottles > 0)
+{
+        if (bottles > 1)
+        {
+                print bottles " bottles of beer on the wall, " bottles " bottles of beer"
+        }
+        # else
+        if (bottles < 2)
+        {
+                print bottles " bottle of beer on the wall, " bottles " bottle of beer"
+        }
+
+        bottles := bottles - 1
+
+        if (bottles > 0)
+        {
+                print "Take one down, pass it around, " bottles " bottles of beer on the wall"
+        }
+        # we can do AND by multiplying like in binary
+        if ((bottles < 2) * (bottles > 1))
+        {
+                print "Take one down, pass it around, " bottles " bottle of beer on the wall"
+        }
+        if (bottles < 1)
+        {
+                print "Take one down, pass it around, no more bottles of beer on the wall"
+        }
+        print
+}

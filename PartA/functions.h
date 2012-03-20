@@ -63,6 +63,24 @@ void * CreateLessThan(void *left, void *right);
  */
 void * CreateGreaterThan(void *left, void *right);
 /**
+ * Create an AddFunction node for summing a sequence
+ * @param NumericalList* list
+ * @return Expr* (AddFunction)
+ */
+void * CreateAddFunction(void *list);
+/**
+ * Create an MeanFunction node for averaging a sequence
+ * @param NumericalList* list
+ * @return Expr* (MeanFunction)
+ */
+void * CreateMeanFunction(void *list);
+/**
+ * Create an StdFunction node for finding the standard deviation
+ * @param NumericalList* list
+ * @return Expr* (StdFunction)
+ */
+void * CreateStdFunction(void *list);
+/**
  * Create Value node
  * @param double d
  * @return Expr* (Vale)
@@ -94,6 +112,20 @@ void * CreateStatementList(void *stmt);
  * @return StatementList*
  */
 void * AddStatementToList(void *stmtlist, void *stmt);
+
+/**
+ * Create a NumericalList with a single Numerical node
+ * @param Numerical* node
+ * @return NumericalList*
+ */
+void * CreateNumericalList(void *node);
+/**
+ * Add a Numerical to a NumericalList
+ * @param NumericalList* nodelist
+ * @param Numerical* node
+ * @return NumericalList*
+ */
+void * AddNumericalToList(void *nodelist, void *node);
 
 /**
  * Create If Statement

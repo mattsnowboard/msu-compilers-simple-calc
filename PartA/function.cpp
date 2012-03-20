@@ -16,22 +16,33 @@
 #include "Sqrt.h"
 #include "Value.h"
 #include "Variable.h"
+<<<<<<< HEAD
 #include "StrVar.h"
+=======
+#include "String.h"
+
+>>>>>>> 5cbc73ab74e6445aa6623745a4ba6cb8171d0f2f
 #include "Statement.h"
 #include "StatementList.h"
+
 #include "IfStmt.h"
 #include "WhileStmt.h"
-#include "String.h"
+
 #include "SymbolTable.h"
 #include "StrSymbolTable.h"
 #include "PrintList.h"
 #include "UserCommandStmt.h"
+#include "AssignStmt.h"
+#include "PrintStmt.h"
+#include "NumericalList.h"
+#include "AddFunction.h"
+#include "MeanFunction.h"
+#include "StdFunction.h"
 
 extern "C" {
 #include "functions.h"    
 }
 
-//std::stack<Statement*> ToCleanUp;
 Program program;
 
 extern "C" void * CreateNegate(void *expr)
@@ -88,6 +99,24 @@ extern "C" void * CreateGreaterThan(void *left, void *right)
     return node;
 }
 
+extern "C" void * CreateAddFunction(void *list)
+{
+    AddFunction *node = new AddFunction((NumericalList*) list);
+    return node;
+}
+
+extern "C" void * CreateMeanFunction(void *list)
+{
+    MeanFunction *node = new MeanFunction((NumericalList*) list);
+    return node;
+}
+
+extern "C" void * CreateStdFunction(void *list)
+{
+    StdFunction *node = new StdFunction((NumericalList*) list);
+    return node;
+}
+
 extern "C" void * CreateDouble(double d)
 {
     Value *node = new Value(d);
@@ -126,6 +155,20 @@ extern "C" void * AddStatementToList(void *stmtlist, void *stmt)
     return s;
 }
 
+extern "C" void * CreateNumericalList(void *node)
+{
+    NumericalList* n = new NumericalList;
+    n->AddItem((Numerical*)node);
+    return n;
+}
+
+extern "C" void * AddNumericalToList(void *nodelist, void *node)
+{
+    NumericalList* n = (NumericalList*)nodelist;
+    n->AddItem((Numerical*)node);
+    return n;
+}
+
 extern "C" void * CreateIfStmt(void *cond, void *stmtlist)
 {
     IfStmt* ifst = new IfStmt((Numerical*)cond, (StatementList*) stmtlist);
@@ -140,33 +183,15 @@ extern "C" void * CreateWhileStmt(void *cond, void *stmtlist)
 
 extern "C" void * CreatePrintStmt(void *plist)
 {
-    // @todo
-    return plist;
+    PrintStmt* pst = new PrintStmt((PrintList*) plist);
+    return pst;
 }
 
 extern "C" void * CreateAssignStatement(const char *name, void *expr)
 {
-    // @todo
-    return expr;
+    AssignStmt* asn = new AssignStmt(name, (Numerical*)expr);
+    return asn;
 }
-
-/*extern "C" void PushToStack(void *expr)
-{
-    ToCleanUp.push((Statement*) expr);
-    }*/
-
-/*extern "C" void PrintExpr(void *expr)
-{
-    Expr *e = (Expr *)expr;
-    e->Evaluate();
-    std::cout << "Answer: " << *e << std::endl;
-}
-
-extern "C" void AssignVariable(const char *name, void *expr)
-{
-    SymbolTable &s = SymbolTable::GetInstance();
-    s.AddVar(name, (Numerical *) expr);
-    }*/
 
 extern "C" void * AddPrintable(void *plist, void *expr)
 {
@@ -187,20 +212,6 @@ extern "C" void ExecuteStatement(void *stmt)
     program.AddStatement(s);
     program.ExecuteTop();
 }
-
-
-/*extern "C" void PrintPrintList(void *plist)
-{
-    PrintList *p = (PrintList *)plist;
-    std::cout << *p << std::endl;
-}
-
-extern "C" void * CreateIf(void *cond, void *stmts) 
-{
-	IfStmt *p = new IfStmt((Numerical *)cond, (StatementList *)stmts);
-	return p;
-    } */
-
 
 extern "C" void * CreateUserCommand(const char *command)
 {

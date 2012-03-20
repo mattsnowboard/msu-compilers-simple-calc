@@ -1,5 +1,13 @@
+print "testing reassignment..."
+
 a:=1
+print
+print "a:=1, result of a is " a
+
 a:=2
+
+print
+print "a:=2, result of a is " a
 
 print a
 

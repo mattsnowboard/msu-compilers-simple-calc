@@ -28,19 +28,23 @@ public:
 
     virtual void Evaluate()
     {
-        if (!_child) {
-            SymbolTable &s = SymbolTable::GetInstance();
-            if (s.DoesExist(_name)) {
-                Numerical *temp = s.GetVal(_name);
-                // Now Variable owns this
-                _child = temp->Clone();
-            }
-            else {
-                std::cout << "Variable: " << _name << " not defined." << std::endl;
-                _value = 0;
-                _isEvaluated = true;
-            }
+        // here we want to always re-evaluate
+        if (_child) {
+            delete _child;
         }
+        
+        SymbolTable &s = SymbolTable::GetInstance();
+        if (s.DoesExist(_name)) {
+            Numerical *temp = s.GetVal(_name);
+            // Now Variable owns this
+            _child = temp->Clone();
+        }
+        else {
+            std::cout << "Variable: " << _name << " not defined." << std::endl;
+            _value = 0;
+            _isEvaluated = true;
+        }
+
         if (_child) {
             _child->Evaluate();
             _value = _child->Get();

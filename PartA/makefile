@@ -52,3 +52,18 @@ clean:
 	$(RM) $(OBJS) .D_TARGET expression.o simplecalc lex.yy.c lex.yy.o \
 		y.tab.h y.tab.c y.tab.o \
 	rm -rf $(DEPDIR)
+
+# test
+test: simplecalc
+	./simplecalc < test1
+	./simplecalc < test2
+	./simplecalc < test3
+	./simplecalc < test4
+	./simplecalc < test5
+	./simplecalc < test6
+	./simplecalc < testif
+	./simplecalc < teststats
+	./simplecalc < testusercommand
+	./simplecalc < testwhile
+	./simplecalc < bottles_of_beer
+

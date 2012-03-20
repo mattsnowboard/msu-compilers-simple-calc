@@ -313,10 +313,20 @@ void DotStatementVisitor::VisitBinary(const Binary &b,
     _edgeLabel = "";
 
     _parent = newParent;
-    b.GetLeft()->Accept(*this);
+    const Numerical *l = b.GetLeft();
+    if (!l) {
+        std::cout << "ERROR: NULL Left child" << std::endl;
+    } else {
+        l->Accept(*this);
+    }
 
     _parent = newParent;
-    b.GetRight()->Accept(*this);
+    const Numerical *r = b.GetRight();
+    if (!r) {
+        std::cout << "ERROR: NULL Right child" << std::endl;
+    } else {
+        r->Accept(*this);
+    }
 }
 
 void DotStatementVisitor::VisitUnary(const Unary &u,
@@ -327,7 +337,12 @@ void DotStatementVisitor::VisitUnary(const Unary &u,
     _edgeLabel = "";
 
     _parent = newParent;
-    u.GetChild()->Accept(*this);
+    const Numerical *n = u.GetChild();
+    if (!n) {
+        std::cout << "ERROR: NULL Child" << std::endl;
+    } else {
+        n->Accept(*this);
+    }
 }
 
 void DotStatementVisitor::VisitStatsFunc(const StatsFunction &f,

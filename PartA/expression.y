@@ -49,7 +49,7 @@ WHILESTMT : WHILE '(' EXPRESSION ')' '\n' '{' '\n' STMTS '}' {
 }
 
 STRDECL : STRVAR ASSIGN PRINTSTRING {$$ = CreateStrAssignStatement($1, $3);}
-| STRVAR ASSIGN PRINTLINE {$$ = CreateStrAssignStatement($1, $3);}
+        | STRVAR ASSIGN PRINTLINE {$$ = CreateStrAssignStatement($1, $3);}
 DECL : VAR ASSIGN EXPRESSION  { $$ = CreateAssignStatement($1, $3); }
 
 OUTPUT : PRINT PRINTSTRING  { $$ = CreatePrintStmt($2); }
@@ -59,10 +59,10 @@ OUTPUT : PRINT {
         AddPrintable(CreatePrintList(), CreateString(" ")));
 }
 
-PRINTSTRING : PRINTLINE STRING {$$ = AddPrintable($1, CreateString($2));}
+PRINTSTRING : PRINTLINE STR {$$ = AddPrintable($1, $2);}
 PRINTLINE : PRINTSTRING EXPRESSION {$$ = AddPrintable($1, $2);}
 
-PRINTSTRING : STR {$$ = AddPrintable(CreatePrintList(), CreateString($1));}
+PRINTSTRING : STR {$$ = AddPrintable(CreatePrintList(), $1);}
 PRINTLINE : EXPRESSION {$$ = AddPrintable(CreatePrintList(), $1);}
 
 STR : STRING {$$ = CreateString($1);}

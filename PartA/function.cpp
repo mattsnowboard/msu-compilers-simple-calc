@@ -16,22 +16,28 @@
 #include "Sqrt.h"
 #include "Value.h"
 #include "Variable.h"
+#include "String.h"
+
 #include "Statement.h"
 #include "StatementList.h"
+
 #include "IfStmt.h"
 #include "WhileStmt.h"
-#include "String.h"
+
 #include "SymbolTable.h"
 #include "PrintList.h"
 #include "UserCommandStmt.h"
 #include "AssignStmt.h"
 #include "PrintStmt.h"
+#include "NumericalList.h"
+#include "AddFunction.h"
+#include "MeanFunction.h"
+#include "StdFunction.h"
 
 extern "C" {
 #include "functions.h"    
 }
 
-//std::stack<Statement*> ToCleanUp;
 Program program;
 
 extern "C" void * CreateNegate(void *expr)
@@ -88,6 +94,24 @@ extern "C" void * CreateGreaterThan(void *left, void *right)
     return node;
 }
 
+extern "C" void * CreateAddFunction(void *list)
+{
+    AddFunction *node = new AddFunction((NumericalList*) list);
+    return node;
+}
+
+extern "C" void * CreateMeanFunction(void *list)
+{
+    MeanFunction *node = new MeanFunction((NumericalList*) list);
+    return node;
+}
+
+extern "C" void * CreateStdFunction(void *list)
+{
+    StdFunction *node = new StdFunction((NumericalList*) list);
+    return node;
+}
+
 extern "C" void * CreateDouble(double d)
 {
     Value *node = new Value(d);
@@ -118,6 +142,20 @@ extern "C" void * AddStatementToList(void *stmtlist, void *stmt)
     StatementList* s = (StatementList*)stmtlist;
     s->AddItem((Statement*)stmt);
     return s;
+}
+
+extern "C" void * CreateNumericalList(void *node)
+{
+    NumericalList* n = new NumericalList;
+    n->AddItem((Numerical*)node);
+    return n;
+}
+
+extern "C" void * AddNumericalToList(void *nodelist, void *node)
+{
+    NumericalList* n = (NumericalList*)nodelist;
+    n->AddItem((Numerical*)node);
+    return n;
 }
 
 extern "C" void * CreateIfStmt(void *cond, void *stmtlist)

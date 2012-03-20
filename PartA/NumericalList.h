@@ -41,12 +41,20 @@ public:
         return s;
     }
 
-    typedef std::list<const Numerical*> ListT;
+    // This can't be const because we must evaluate it
+    typedef std::list<Numerical*> ListT;
 
-    ListT Get() const
+    ListT Get()
     {
-        ListT cret(_list.begin(), _list.end());
-        return cret;
+        return _list;
+    }
+
+    typedef std::list<const Numerical*> ListCT;
+
+    ListCT Get() const
+    {
+        ListCT clist(_list.begin(), _list.end());
+        return clist;
     }
 
 private:

@@ -50,7 +50,7 @@ expression.o: expression.cpp y.tab.h Expr.h DotStatementVisitor.h
 
 clean: 
 	$(RM) $(OBJS) .D_TARGET expression.o simplecalc lex.yy.c lex.yy.o \
-		y.tab.h y.tab.c y.tab.o \
+		y.tab.h y.tab.c y.tab.o y.output \
 	rm -rf $(DEPDIR)
 
 # test

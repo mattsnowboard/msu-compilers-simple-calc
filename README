@@ -7,8 +7,20 @@ Authors:
  - Jason Harris (harri757)
  - Camden Smith (csmith)
 
-Memory Management Notes
------------------------
- 1. stack of Expr roots will get cleaned at end
- 2. SymbolTable will delete all Expr roots
- 3. Every node deletes children EXCEPT Variable (see 2)
+Do Something Extra:
+-------------------
+
+ - Matt Durak: Dot File Generation
+    - Added a Visitor to walk the Statement trees and output a dot file
+    - To test this, add the "-d" switch followed by an output file name to the
+      command line args.  After the completion of the program, the dot file
+      will be generated.
+ - Matt Durak: Statistics Functions
+    - Added functions to calculate the mean, sum (called add), and standard
+      deviation (std) of a list of expressions.  The results of the functions
+      are expresssions so they may actually be nested.  See "teststats" for
+      some examples of this in action.
+ - Jason Harris: User Commands
+    - 
+ - Camden Smith: String Variables
+    -

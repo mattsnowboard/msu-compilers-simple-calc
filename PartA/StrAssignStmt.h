@@ -25,8 +25,10 @@ public:
             // that new Value will be owned by SymbolTable
             // But this owns its _StrName pointer now
             std::ostringstream ss;
+            
 
-            ss << _Str;
+            // need dummy quotes which we strip out in String
+            ss << "\"" <<  *_Str << "\"";
             String *strVal = new String(ss.str());
             s.AddVar(_name, strVal);
         }

@@ -1,0 +1,10 @@
+# testing string variables
+
+$h := "Hello "
+$w := " World"
+print $h 1 $w
+
+$abc := "This has expr in it: " 1 + 3 + 5
+print $abc
+
+print

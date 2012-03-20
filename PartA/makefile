@@ -65,5 +65,6 @@ test: simplecalc
 	./simplecalc < teststats
 	./simplecalc < testusercommand
 	./simplecalc < testwhile
+	./simplecalc < teststrvar
 	./simplecalc < bottles_of_beer
 

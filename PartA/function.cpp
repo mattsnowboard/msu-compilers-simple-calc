@@ -16,12 +16,8 @@
 #include "Sqrt.h"
 #include "Value.h"
 #include "Variable.h"
-<<<<<<< HEAD
 #include "StrVar.h"
-=======
 #include "String.h"
-
->>>>>>> 5cbc73ab74e6445aa6623745a4ba6cb8171d0f2f
 #include "Statement.h"
 #include "StatementList.h"
 

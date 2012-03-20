@@ -1,0 +1,62 @@
+#test statistical functions
+
+print "Testing add to sum elements"
+print
+
+print "add(1, 2, 3), expect 6"
+add(1, 2, 3)
+
+print
+print "add(5), expect 5"
+add(5)
+
+print
+print "add(1+2, 3 * 4 +1, 6) expect 22"
+add(1+2, 3 * 4 +1, 6)
+
+print
+print "a:= 2 * 4"
+a:=2*4
+print "add(a, 1) expect 9"
+add(a, 1)
+
+print
+print "b := -3"
+b:= -3
+print "add(a,b, -100) expect -95"
+add(a, b, -100)
+
+print
+print "TESTING MEAN"
+
+print
+print "mean(1, 2, 3, 4) expect 2.5"
+mean(1,2,3,4)
+
+print
+print "c:=100"
+c:=100
+print "mean(c, c, c*2, 400) expect 200"
+mean(c, c, c*2, 400)
+
+print
+print "TESTING STD"
+
+print
+print "std(1,1,1,1) expect 0"
+std(1,1,1,1)
+
+print
+print "std(100, 200, 300, 400) exepct 129.09944"
+std(100,200,300,400)
+
+print
+print "TESTING NESTED FUNCTIONS"
+
+print
+print "add(mean(100)) expect 100"
+add(mean(100))
+print
+print "add(mean(100, 200, 300), mean(1, 2, 3), std(100, 200, 300, 400)"
+print "    expect 331.0994"
+add(mean(100, 200, 300), mean(1, 2, 3), std(100, 200, 300, 400))

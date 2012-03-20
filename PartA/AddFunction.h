@@ -21,7 +21,7 @@ public:
                 (*it)->Evaluate();
                 total += (*it)->Get();
             }
-            _value = 0;
+            _value = total;
         }
     }
 

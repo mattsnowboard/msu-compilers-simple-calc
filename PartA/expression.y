@@ -17,9 +17,9 @@
 
 %token PRINT IF WHILE
 %token<ival> NUM
-%token<sval> STRING VAR ASSIGN SQRT USERSUPPORT
+%token<sval> STRING VAR ASSIGN SQRT USERSUPPORT ADDFUNC MEANFUNC STDFUNC
 
-%type<pval> STMT DECL EXPR STMTS EXPON UNARY TERM COMP NUMBER OUTPUT PRINTSTRING PRINTLINE IFSTMT WHILESTMT EXPRESSION
+%type<pval> STMT DECL EXPR STMTS EXPON UNARY TERM COMP NUMBER OUTPUT PRINTSTRING PRINTLINE IFSTMT WHILESTMT EXPRESSION EXPRLIST STATS
 
 %%
 
@@ -39,7 +39,7 @@ STMT : DECL  { $$ = $1; }
 	 | USERSUPPORT { $$ = CreateUserCommand($1); }
 	 | IFSTMT { $$ = $1; }
 	 | WHILESTMT { $$ = $1; }
-		
+
 IFSTMT : IF '(' EXPRESSION ')' '\n' '{' '\n' STMTS '}' {
     $$ = CreateIfStmt($3, $8);
 }
@@ -62,8 +62,16 @@ PRINTLINE : PRINTSTRING EXPRESSION {$$ = AddPrintable($1, $2);}
 PRINTSTRING : STRING {$$ = AddPrintable(CreatePrintList(), CreateString($1));}
 PRINTLINE : EXPRESSION {$$ = AddPrintable(CreatePrintList(), $1);}
 
+EXPRLIST : EXPRESSION { $$ = CreateNumericalList($1); }
+         | EXPRLIST ',' EXPRESSION { $$ = AddNumericalToList($1, $3); }
+
 EXPRESSION : EXPR  {$$ = $1;}
            | COMP  {$$ = $1;}
+           | STATS {$$ = $1;}
+
+STATS : ADDFUNC '(' EXPRLIST ')' { $$ = CreateAddFunction($3); }
+      | MEANFUNC '(' EXPRLIST ')' { $$ = CreateMeanFunction($3); }
+      | STDFUNC '(' EXPRLIST ')' { $$ = CreateStdFunction($3); }
 
 COMP : EXPR '<' EXPR  {$$ = CreateLessThan($1, $3); }
 COMP : EXPR '>' EXPR  {$$ = CreateGreaterThan($1, $3);}

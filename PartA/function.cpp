@@ -16,12 +16,14 @@
 #include "Sqrt.h"
 #include "Value.h"
 #include "Variable.h"
+#include "StrVar.h"
 #include "Statement.h"
 #include "StatementList.h"
 #include "IfStmt.h"
 #include "WhileStmt.h"
 #include "String.h"
 #include "SymbolTable.h"
+#include "StrSymbolTable.h"
 #include "PrintList.h"
 #include "UserCommandStmt.h"
 
@@ -95,6 +97,12 @@ extern "C" void * CreateDouble(double d)
 extern "C" void * CreateVariable(const char *name)
 {
     Variable *node = new Variable(name);
+    return node;
+}
+
+extern "C" void * CreateStrVariable(const char *name)
+{
+    StrVar *node = new StrVar(name);
     return node;
 }
 

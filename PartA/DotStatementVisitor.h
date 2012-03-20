@@ -34,6 +34,7 @@ public:
     virtual void Visit(const UserCommandStmt &u);
     virtual void Visit(const Value &v);
     virtual void Visit(const Variable &v);
+    virtual void Visit(const StrVar &v);
     virtual void Visit(const WhileStmt &w);
 
 private:

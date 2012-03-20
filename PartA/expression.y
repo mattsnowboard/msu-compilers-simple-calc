@@ -86,5 +86,6 @@ UNARY : NUMBER {$$ = $1;}
 NUMBER : '(' EXPR ')'  {$$ = $2;}
 NUMBER : NUM  {$$ = CreateDouble($1);}
 NUMBER : VAR  {$$ = CreateVariable($1);}
+//NUMBER : STRING {$$ = CreateStrVar($1);}
 
 %%

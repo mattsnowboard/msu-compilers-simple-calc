@@ -1,5 +1,5 @@
 
-SRCS := Numerical.cpp function.cpp SymbolTable.cpp DotStatementVisitor.cpp
+SRCS := Numerical.cpp function.cpp SymbolTable.cpp StrSymbolTable.cpp DotStatementVisitor.cpp
 OBJS := $(SRCS:%.cpp=%.o)
 
 CXXFLAGS = -Wall -g

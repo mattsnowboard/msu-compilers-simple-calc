@@ -17,6 +17,7 @@
 #include "UserCommandStmt.h"
 #include "Value.h"
 #include "Variable.h"
+#include "StrVar.h"
 #include "WhileStmt.h"
 
 #include "Binary.h"
@@ -165,6 +166,14 @@ void DotStatementVisitor::Visit(const Value & v)
 }
 
 void DotStatementVisitor::Visit(const Variable & v)
+{
+    std::string current(GetAddressAsString(v));
+    _out << "\t" << current << "[label=\"<variable, " << v.GetName() << ">\"]"
+         << std::endl;
+    VisitUnary(v, current);
+}
+
+void DotStatementVisitor::Visit(const StrVar & v)
 {
     std::string current(GetAddressAsString(v));
     _out << "\t" << current << "[label=\"<variable, " << v.GetName() << ">\"]"

@@ -19,6 +19,7 @@ class Subtract;
 class UserCommandStmt;
 class Value;
 class Variable;
+class StrVar;
 class WhileStmt;
 
 class StatementVisitor
@@ -41,6 +42,7 @@ public:
     virtual void Visit(const UserCommandStmt &u) = 0;
     virtual void Visit(const Value &v) = 0;
     virtual void Visit(const Variable &v) = 0;
+    virtual void Visit(const StrVar &v) = 0;
     virtual void Visit(const WhileStmt &w) = 0;
 };
 

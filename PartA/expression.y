@@ -66,7 +66,7 @@ PRINTSTRING : STR {$$ = AddPrintable(CreatePrintList(), $1);}
 PRINTLINE : EXPRESSION {$$ = AddPrintable(CreatePrintList(), $1);}
 
 STR : STRING {$$ = CreateString($1);}
-    | STRVAR { $$ = CreateStrVariable($1);}
+    | '$' STRVAR { $$ = CreateStrVariable($2);}
 
 EXPRLIST : EXPRESSION { $$ = CreateNumericalList($1); }
          | EXPRLIST ',' EXPRESSION { $$ = AddNumericalToList($1, $3); }

@@ -4,6 +4,9 @@
 #include "StrSymbolTable.h"
 #include "Statement.h"
 #include "PrintList.h"
+#include <iostream>
+#include <sstream>
+#include <string>
 
 class StrAssignStmt : public Statement
 {
@@ -17,14 +20,19 @@ public:
     {
        if (_Str) {
             StrSymbolTable &s = StrSymbolTable::GetInstance();
+ 	    
             // create a new Value of the current Numerical StrName
             // that new Value will be owned by SymbolTable
             // But this owns its _StrName pointer now
+	    Expr *e = s.GetStr(_name);
+	    std::stringstream ss;
+	    ss << _Str;
 
             // @TODO
             // for this one we need to conver the list into a String
             // use sstreams to do that
-            s.AddVar(_name, NULL);
+	    
+            s.AddVar(_name, e );
         }
 	}
 

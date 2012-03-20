@@ -55,7 +55,7 @@ private:
 
     virtual void Print(std::ostream &out) const
     {
-        out << _child;
+        out << *_child;
     }
 };
 

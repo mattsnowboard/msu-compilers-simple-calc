@@ -24,15 +24,11 @@ public:
             // create a new Value of the current Numerical StrName
             // that new Value will be owned by SymbolTable
             // But this owns its _StrName pointer now
-	    Expr *e = s.GetStr(_name);
-	    std::stringstream ss;
-	    ss << _Str;
+            std::ostringstream ss;
 
-            // @TODO
-            // for this one we need to conver the list into a String
-            // use sstreams to do that
-	    
-            s.AddVar(_name, e );
+            ss << _Str;
+            String *strVal = new String(ss.str());
+            s.AddVar(_name, strVal);
         }
 	}
 

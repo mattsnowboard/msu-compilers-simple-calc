@@ -1,23 +1,16 @@
 #ifndef _STRVAR_H
 #define _STRVAR_H
 
-#include "Unary.h"
-#include "SymbolTable.h"
+#include "StrSymbolTable.h"
 #include <string>
 
-/**
- * Note StrVar is not a Unary
- * StrVar does not own its child like Unary does, SymbolTable owns it
- * @Matt 2/26/12
- * Now StrVar does own the child
- */
-class StrVar : public Unary
+// This can't be Unary because its child is not Numerical
+class StrVar : public Expr
 {
 public:
-    StrVar(const std::string &s) : Unary(NULL), _name(s) {}
+    StrVar(const std::string &s) : _name(s) {}
 
     std::string GetName() const { return _name; }
-    
 
     virtual StrVar* Clone()
     {
@@ -28,20 +21,23 @@ public:
 
     virtual void Evaluate()
     {
-        if (!_child) {
-            SymbolTable &s = SymbolTable::GetInstance();
-            if (s.DoesExist(_name)) {
-                Numerical *temp = s.GetVal(_name);
-                _child = temp->Clone();
-            }
-            else {
-                _value = 0;
-                _isEvaluated = true;
-            }
+        // here we want to always re-evaluate
+        if (_child) {
+            delete _child;
         }
+        
+        StrSymbolTable &s = StrSymbolTable::GetInstance();
+        if (s.DoesExist(_name)) {
+            Expr *temp = s.GetStr(_name);
+            // Now Variable owns this
+            _child = temp->Clone();
+        }
+        else {
+            std::cout << "Variable: " << _name << " not defined." << std::endl;
+        }
+
         if (_child) {
             _child->Evaluate();
-            _value = _child->Get();
         }
     }
 
@@ -52,8 +48,15 @@ public:
 
 protected:
     std::string _name;
-    // this may prove useful...or we can delete it safely
-    bool _isEvaluated;
+
+    Expr *_child;
+
+private:
+
+    virtual void Print(std::ostream &out) const
+    {
+        out << _child;
+    }
 };
 
 #endif

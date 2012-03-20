@@ -189,6 +189,13 @@ extern "C" void * CreateAssignStatement(const char *name, void *expr)
     return asn;
 }
 
+extern "C" void * CreateStrAssignStatement(const char *name, void *expr)
+{
+    // @TODO THIS NEEDS TO USE StrAssignStmt
+    AssignStmt* asn = new AssignStmt(name, (Numerical*)expr);
+    return asn;
+}
+
 extern "C" void * AddPrintable(void *plist, void *expr)
 {
     PrintList *p = (PrintList *)plist;

@@ -17,9 +17,9 @@
 
 %token PRINT IF WHILE
 %token<ival> NUM
-%token<sval> STRING VAR ASSIGN SQRT USERSUPPORT ADDFUNC MEANFUNC STDFUNC
+%token<sval> STRING VAR ASSIGN SQRT USERSUPPORT ADDFUNC MEANFUNC STDFUNC STRVAR
 
-%type<pval> STMT DECL EXPR STMTS EXPON UNARY TERM COMP NUMBER OUTPUT PRINTSTRING PRINTLINE IFSTMT WHILESTMT EXPRESSION EXPRLIST STATS
+%type<pval> STMT DECL EXPR STMTS EXPON UNARY TERM COMP NUMBER OUTPUT PRINTSTRING PRINTLINE IFSTMT WHILESTMT EXPRESSION EXPRLIST STATS STR STRDECL
 
 %%
 
@@ -34,6 +34,7 @@ STMTS : STMTS '\n'	{ $$ = $1; }
       | {}
 	 
 STMT : DECL  { $$ = $1; }
+     | STRDECL { $$ = $1; }
      | EXPRESSION { $$ = $1; }
 	 | OUTPUT { $$ = $1; }
 	 | USERSUPPORT { $$ = CreateUserCommand($1); }
@@ -47,6 +48,8 @@ WHILESTMT : WHILE '(' EXPRESSION ')' '\n' '{' '\n' STMTS '}' {
     $$ = CreateWhileStmt($3, $8);
 }
 
+STRDECL : STRVAR ASSIGN PRINTSTRING {$$ = CreateStrAssignStatement($1, $3);}
+| STRVAR ASSIGN PRINTLINE {$$ = CreateStrAssignStatement($1, $3);}
 DECL : VAR ASSIGN EXPRESSION  { $$ = CreateAssignStatement($1, $3); }
 
 OUTPUT : PRINT PRINTSTRING  { $$ = CreatePrintStmt($2); }
@@ -59,8 +62,11 @@ OUTPUT : PRINT {
 PRINTSTRING : PRINTLINE STRING {$$ = AddPrintable($1, CreateString($2));}
 PRINTLINE : PRINTSTRING EXPRESSION {$$ = AddPrintable($1, $2);}
 
-PRINTSTRING : STRING {$$ = AddPrintable(CreatePrintList(), CreateString($1));}
+PRINTSTRING : STR {$$ = AddPrintable(CreatePrintList(), CreateString($1));}
 PRINTLINE : EXPRESSION {$$ = AddPrintable(CreatePrintList(), $1);}
+
+STR : STRING {$$ = CreateString($1);}
+    | STRVAR { $$ = CreateStrVariable($1);}
 
 EXPRLIST : EXPRESSION { $$ = CreateNumericalList($1); }
          | EXPRLIST ',' EXPRESSION { $$ = AddNumericalToList($1, $3); }
@@ -94,6 +100,5 @@ UNARY : NUMBER {$$ = $1;}
 NUMBER : '(' EXPRESSION ')'  {$$ = $2;}
 NUMBER : NUM  {$$ = CreateDouble($1);}
 NUMBER : VAR  {$$ = CreateVariable($1);}
-//NUMBER : STRING {$$ = CreateStrVar($1);}
 
 %%

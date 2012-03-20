@@ -93,6 +93,12 @@ void * CreateDouble(double d);
  */
 void * CreateVariable(const char *name);
 /**
+ * Create String Variable node
+ * @param char* name
+ * @return Expr* (StrVariable)
+ */
+void * CreateStrVariable(const char *name);
+/**
  * Create String node
  * @param char* string
  * @return Expr* (String)
@@ -154,7 +160,13 @@ void * CreatePrintStmt(void *plist);
  * @return Statement* (AssignStmt)
  */
 void * CreateAssignStatement(const char *name, void *expr);
-
+/**
+ * Create String Assignment Statement
+ * @param char* name
+ * @param Expr*
+ * @return Statement* (StrAssignStmt)
+ */
+void * CreateStrAssignStatement(const char *name, void *expr);
 /**
  * Add a printable item to a PrintList
  * @param PrintList* plist

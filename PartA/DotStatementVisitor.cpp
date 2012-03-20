@@ -220,7 +220,7 @@ void DotStatementVisitor::Visit(const StrVar & v)
     std::string current(GetAddressAsString(v));
     _out << "\t" << current << "[label=\"<variable, " << v.GetName() << ">\"]"
          << std::endl;
-    VisitUnary(v, current);
+//    VisitUnary(v, current);
 }
 
 void DotStatementVisitor::Visit(const WhileStmt & w)

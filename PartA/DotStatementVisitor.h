@@ -21,6 +21,7 @@ public:
     virtual void Visit(const Program &p);
     virtual void Visit(const Add &a);
     virtual void Visit(const AssignStmt &a);
+    virtual void Visit(const StrAssignStmt &a);
     virtual void Visit(const Divide &d);
     virtual void Visit(const Exponent &e);
     virtual void Visit(const GreaterThan &g);

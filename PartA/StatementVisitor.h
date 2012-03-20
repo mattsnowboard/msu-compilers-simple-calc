@@ -5,6 +5,7 @@ class Program;
 
 class Add;
 class AssignStmt;
+class StrAssignStmt;
 class Divide;
 class Exponent;
 class GreaterThan;
@@ -31,6 +32,7 @@ public:
     virtual void Visit(const Program &p) = 0;
     virtual void Visit(const Add &a) = 0;
     virtual void Visit(const AssignStmt &a) = 0;
+    virtual void Visit(const StrAssignStmt &a) = 0;
     virtual void Visit(const Divide &d) = 0;
     virtual void Visit(const Exponent &e) = 0;
     virtual void Visit(const GreaterThan &g) = 0;

@@ -29,6 +29,7 @@
 #include "PrintList.h"
 #include "UserCommandStmt.h"
 #include "AssignStmt.h"
+#include "StrAssignStmt.h"
 #include "PrintStmt.h"
 #include "NumericalList.h"
 #include "AddFunction.h"

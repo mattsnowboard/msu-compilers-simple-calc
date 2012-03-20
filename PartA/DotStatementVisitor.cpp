@@ -71,6 +71,26 @@ void DotStatementVisitor::Visit(const AssignStmt & a)
     _edgeLabel = "";
 }
 
+void DotStatementVisitor::Visit(const StrAssignStmt & a)
+{
+  /*  std::string current(GetAddressAsString(a));
+    _out << "\t" << current << "[label=\"Assign\"]"
+         << std::endl;
+    _out << "\t" << _parent << "->" << current << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
+
+    _parent = current;
+    _edgeLabel = "[label=\"variable\"]";
+    _out << "\t" << _parent << "->" << a.GetName() << " "
+         << _edgeLabel << std::endl;
+    _edgeLabel = "";
+
+    _parent = current;
+    a.GetStrName()->Accept(*this);
+    _edgeLabel = "";*/
+}
+
 void DotStatementVisitor::Visit(const Divide & d)
 {
     std::string current(GetAddressAsString(d));

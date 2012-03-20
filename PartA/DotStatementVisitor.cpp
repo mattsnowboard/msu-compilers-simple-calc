@@ -88,7 +88,17 @@ void DotStatementVisitor::Visit(const StrAssignStmt & a)
 
     _parent = current;
     a.GetStrName()->Accept(*this);
-    _edgeLabel = "";*/
+    _edgeLabel = "";
+
+    const PrintList *slist = p.GetList();
+    PrintList::ListT list = slist->GetList();
+    for (PrintList::ListT::iterator it = list.begin();
+         it != list.end();
+         ++it) {
+        _parent = current;
+        (*it)->Accept(*this);
+    }
+*/
 }
 
 void DotStatementVisitor::Visit(const Divide & d)

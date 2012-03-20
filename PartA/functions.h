@@ -163,10 +163,10 @@ void * CreateAssignStatement(const char *name, void *expr);
 /**
  * Create String Assignment Statement
  * @param char* name
- * @param Expr*
+ * @param PrintList* list
  * @return Statement* (StrAssignStmt)
  */
-void * CreateStrAssignStatement(const char *name, void *expr);
+void * CreateStrAssignStatement(const char *name, void *list);
 /**
  * Add a printable item to a PrintList
  * @param PrintList* plist

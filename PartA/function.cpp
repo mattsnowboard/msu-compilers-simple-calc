@@ -190,10 +190,9 @@ extern "C" void * CreateAssignStatement(const char *name, void *expr)
     return asn;
 }
 
-extern "C" void * CreateStrAssignStatement(const char *name, void *expr)
+extern "C" void * CreateStrAssignStatement(const char *name, void *list)
 {
-    // @TODO THIS NEEDS TO USE StrAssignStmt
-    AssignStmt* asn = new AssignStmt(name, (Numerical*)expr);
+    StrAssignStmt* asn = new StrAssignStmt(name, (PrintList*)list);
     return asn;
 }
 

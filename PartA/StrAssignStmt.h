@@ -3,31 +3,34 @@
 
 #include "StrSymbolTable.h"
 #include "Statement.h"
-#include "Value.h"
+#include "PrintList.h"
 
 class StrAssignStmt : public Statement
 {
 public:
 
-    StrAssignStmt(const std::string &name, Expr *StrName) :
-        _name(name), _StrName(StrName)
+    StrAssignStmt(const std::string &name, PrintList *Str) :
+        _name(name), _Str(Str)
     {}
 
     virtual void Execute()
     {
-       if (_StrName) {
+       if (_Str) {
             StrSymbolTable &s = StrSymbolTable::GetInstance();
             // create a new Value of the current Numerical StrName
             // that new Value will be owned by SymbolTable
             // But this owns its _StrName pointer now
-            _StrName->Evaluate();
-            s.AddVar(_name, _StrName);
+
+            // @TODO
+            // for this one we need to conver the list into a String
+            // use sstreams to do that
+            s.AddVar(_name, NULL);
         }
 	}
 
     virtual StrAssignStmt* Clone()
     {
-        Expr *v = (_StrName) ? _StrName->Clone() : NULL;
+        PrintList *v = (_Str) ? _Str->Clone() : NULL;
         StrAssignStmt *a = new StrAssignStmt(_name, v);
         return a;
     }
@@ -42,22 +45,22 @@ public:
         return _name;
     }
 
-    Expr const* GetStrName() const
+    PrintList const* GetStr() const
     {
-        return _StrName;
+        return _Str;
     }
 
     ~StrAssignStmt()
     {
-        // actually, we do need to own _StrName
-        if (_StrName) {
-            delete _StrName;
+        // actually, we do need to own _Str
+        if (_Str) {
+            delete _Str;
         }
     }
 
 protected:
     std::string _name;
-    Expr* _StrName;
+    PrintList* _Str;
 };
 
 #endif

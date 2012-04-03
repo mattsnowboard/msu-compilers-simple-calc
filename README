@@ -15,6 +15,9 @@ Do Something Extra:
     - To test this, add the "-d" switch followed by an output file name to the
       command line args.  After the completion of the program, the dot file
       will be generated.
+    - **NOTE** It may print a message about an error.  This happens due to
+      variables which were never evaluated (such as one within an if block).
+      It is not an actual error and the output is still valid.
  - Matt Durak: Statistics Functions
     - Added functions to calculate the mean, sum (called add), and standard
       deviation (std) of a list of expressions.  The results of the functions

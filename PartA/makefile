@@ -50,7 +50,7 @@ expression.o: expression.cpp y.tab.h Expr.h DotStatementVisitor.h
 
 clean: 
 	$(RM) $(OBJS) .D_TARGET expression.o simplecalc lex.yy.c lex.yy.o \
-		y.tab.h y.tab.c y.tab.o y.output \
+		y.tab.h y.tab.c y.tab.o y.output *.dot *.png \
 	rm -rf $(DEPDIR)
 
 # test
@@ -67,4 +67,5 @@ test: simplecalc
 	./simplecalc < testwhile
 	./simplecalc < teststrvar
 	./simplecalc < bottles_of_beer
-
+	./simplecalc < bottles_of_beer -d beer.dot
+	dot -Tpng beer.dot -o Bottles.png

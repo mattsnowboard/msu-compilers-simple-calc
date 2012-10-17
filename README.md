@@ -1,6 +1,15 @@
 Simple Calculator
 =================
 
+A project for CSE450 Compilers
+
+The assignment was to create a simple calculator in Flex and Bison
+
+Dependencies
+------------
+
+Flex and Bison
+
 Authors:
 --------
  - Matt Durak (durakmat)
